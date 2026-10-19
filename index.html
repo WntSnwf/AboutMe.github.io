@@ -1,585 +1,1897 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN" data-lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anti-Utopia System | Wnt. Snwf.</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #05070a;
-            color: #b0e6ff;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 16px;
-            line-height: 1.6;
-            overflow: hidden;
-            height: 100vh;
-            position: relative;
-        }
-        /* 扫描线效果 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.15),
-                rgba(0, 0, 0, 0.15) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-            z-index: 100;
-            opacity: 0.3;
-        }
-        /* 终端容器 */
-        #terminal {
-            width: 100%;
-            height: 100vh;
-            padding: 30px 40px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #2a3f4f #05070a;
-        }
-        #terminal::-webkit-scrollbar {
-            width: 8px;
-        }
-        #terminal::-webkit-scrollbar-track {
-            background: #05070a;
-        }
-        #terminal::-webkit-scrollbar-thumb {
-            background-color: #2a3f4f;
-            border-radius: 4px;
-        }
-        /* 输出行 */
-        .output-line {
-            margin-bottom: 6px;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-        }
-        /* 文字样式 */
-        .system-gray { color: #6c7a89; }
-        .system-cyan { color: #00e5ff; }
-        .user-input { color: #ffffff; }
-        .error { color: #ff5277; }
-        .success { color: #4ade80; }
-        .highlight {
-            color: #f0f9ff;
-            text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
-        }
-        a {
-            color: #00e5ff;
-            text-decoration: underline;
-        }
-        a:hover {
-            color: #ffffff;
-            text-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
-        }
-        /* 输入行 */
-        .input-line {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .prompt {
-            color: #00e5ff;
-            font-weight: bold;
-        }
-        #input-text {
-            flex: 1;
-            outline: none;
-            caret-color: transparent;
-        }
-        /* 光标闪烁 */
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 18px;
-            background-color: #b0e6ff;
-            animation: blink 1s step-end infinite;
-            margin-left: 2px;
-        }
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-        /* 隐藏输入框 */
-        #hidden-input {
-            position: absolute;
-            opacity: 0;
-            left: -9999px;
-            top: 0;
-        }
-        /* 故障文字效果 */
-        .glitch {
-            position: relative;
-        }
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.8;
-        }
-        .glitch::before {
-            color: #ff00c8;
-            animation: glitch-1 2s infinite linear alternate-reverse;
-            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-        }
-        .glitch::after {
-            color: #00fff7;
-            animation: glitch-2 3s infinite linear alternate-reverse;
-            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-        }
-        @keyframes glitch-1 {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-2px); }
-            40% { transform: translateX(2px); }
-            60% { transform: translateX(-1px); }
-            80% { transform: translateX(1px); }
-            100% { transform: translateX(0); }
-        }
-        @keyframes glitch-2 {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(2px); }
-            40% { transform: translateX(-2px); }
-            60% { transform: translateX(1px); }
-            80% { transform: translateX(-1px); }
-            100% { transform: translateX(0); }
-        }
-        /* 响应式适配 */
-        @media (max-width: 600px) {
-            #terminal {
-                padding: 20px 15px;
-                font-size: 14px;
-            }
-            .cursor {
-                height: 16px;
-                width: 8px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#04060c">
+<title>真白 冬雪</title>
+<meta name="description" content="真白 冬雪（Mashiro Fuyuyuki）的个人主页。ISFP &amp; INFP，永遠に孤独な人。神？紙？かみです。The world is an Anti-Utopia.">
+<meta property="og:title" content="真白 冬雪 · ネメシス">
+<meta property="og:description" content="永遠に孤独な人 · 神？紙？かみです · 私を愛して">
+<meta property="og:type" content="profile">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2304060c'/%3E%3Cpath d='M40 15a18 18 0 1 0 0 34 14 14 0 1 1 0-34z' fill='%23b9defa'/%3E%3Ccircle cx='45' cy='20' r='2' fill='%23d9c79f'/%3E%3C/svg%3E">
+<script>
+  document.documentElement.classList.add('js');
+  try {
+    var savedLang = localStorage.getItem('wnt-lang');
+    if (savedLang === 'zh' || savedLang === 'ja' || savedLang === 'en') {
+      document.documentElement.dataset.lang = savedLang;
+    }
+  } catch (e) {}
+</script>
+<style>
+/* ============================================================
+   0. Tokens
+   ============================================================ */
+:root{
+  --bg:#04060c;
+  --ink:#eaf3fc;
+  --ink-soft:#a8bdd2;
+  --ink-mute:#72879d;
+  --ice:#a8d8f7;
+  --ice-bright:#dcf1ff;
+  --gold:#d9c79f;
+  --violet:#b7a6e8;
+  --aspect:#a8d8f7;
+  --line:rgba(168,216,247,.13);
+  --line-strong:rgba(168,216,247,.26);
+  --serif:"Noto Serif SC","Noto Serif JP","Songti SC","STSong","Yu Mincho","Hiragino Mincho ProN","SimSun",serif;
+  --sans:"Noto Sans SC","PingFang SC","Hiragino Sans","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+  --mono:"Cascadia Mono","JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --wrap:1180px;
+  --gutter:clamp(22px,5vw,64px);
+  --header-h:74px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:96px;
+  -webkit-text-size-adjust:100%;
+}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0;
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(1100px 780px at 76% -12%,rgba(64,112,168,.20),transparent 62%),
+    radial-gradient(900px 700px at 6% 28%,rgba(112,84,168,.13),transparent 66%),
+    linear-gradient(180deg,#04060c 0%,#050a13 46%,#04060c 100%);
+}
+::selection{background:rgba(168,216,247,.26);color:#fff}
+a{color:inherit;text-decoration:none}
+img,svg{display:block}
+button{font:inherit;color:inherit}
+:focus-visible{outline:1px solid var(--ice);outline-offset:4px}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+.wrap{
+  width:min(var(--wrap),calc(100% - var(--gutter) * 2));
+  margin-inline:auto;
+  position:relative;
+  z-index:2;
+}
+.skip{
+  position:fixed;top:-100px;left:16px;z-index:60;
+  padding:10px 18px;background:#0b1524;border:1px solid var(--line-strong);
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;
+  transition:top .25s ease;
+}
+.skip:focus{top:14px}
+
+/* ============================================================
+   1. Atmosphere
+   ============================================================ */
+.aurora{
+  position:fixed;inset:-18%;z-index:0;pointer-events:none;
+  filter:blur(90px);opacity:.6;
+}
+.aurora span{
+  position:absolute;display:block;width:52vw;height:52vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(92,152,214,.30) 0%,rgba(92,152,214,0) 66%);
+  animation:drift 26s ease-in-out infinite alternate;
+}
+.aurora span:nth-child(1){top:-6%;left:44%}
+.aurora span:nth-child(2){
+  top:34%;right:-12%;
+  background:radial-gradient(circle,rgba(132,100,198,.24) 0%,rgba(132,100,198,0) 66%);
+  animation-duration:34s;animation-direction:alternate-reverse;
+}
+.aurora span:nth-child(3){
+  top:44%;left:-14%;width:44vw;height:44vw;
+  background:radial-gradient(circle,rgba(70,120,150,.20) 0%,rgba(70,120,150,0) 66%);
+  animation-duration:42s;
+}
+#sky{
+  position:fixed;inset:0;z-index:1;width:100%;height:100%;
+  pointer-events:none;opacity:.9;
+}
+.grain{
+  position:fixed;inset:0;z-index:3;width:100%;height:100%;
+  opacity:.035;mix-blend-mode:overlay;pointer-events:none;
+}
+@keyframes drift{
+  from{transform:translate3d(-3%,-2%,0) scale(1)}
+  to{transform:translate3d(4%,3%,0) scale(1.12)}
+}
+
+/* ============================================================
+   2. Progress / Header
+   ============================================================ */
+.progress{
+  position:fixed;top:0;left:0;right:0;height:1px;z-index:50;
+  background:rgba(168,216,247,.08);pointer-events:none;
+}
+.progress span{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,transparent,var(--ice),var(--gold));
+  box-shadow:0 0 12px rgba(168,216,247,.6);
+  transition:width .12s linear;
+}
+.site-head{
+  position:fixed;top:0;left:0;right:0;z-index:30;
+  height:var(--header-h);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;
+  padding:0 var(--gutter);
+  border-bottom:1px solid transparent;
+  transition:background .4s ease,border-color .4s ease,backdrop-filter .4s ease;
+}
+.site-head.is-scrolled{
+  background:rgba(4,6,12,.72);
+  border-bottom-color:var(--line);
+  -webkit-backdrop-filter:blur(16px) saturate(120%);
+  backdrop-filter:blur(16px) saturate(120%);
+}
+.brand{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--serif);font-size:15px;letter-spacing:.16em;
+  color:var(--ice-bright);white-space:nowrap;
+}
+.brand .brand-mark{
+  width:26px;height:26px;border:1px solid var(--line-strong);border-radius:50%;
+  display:grid;place-items:center;
+  font-size:12px;color:var(--gold);letter-spacing:0;
+  transform:rotate(-8deg);
+}
+.brand .brand-sub{
+  font-family:var(--mono);font-size:9px;letter-spacing:.26em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.nav{display:flex;align-items:center;gap:clamp(16px,2.4vw,34px)}
+.nav a{
+  position:relative;
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  color:var(--ink-soft);padding:6px 0;
+  transition:color .3s ease;
+}
+.nav a::after{
+  content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+  background:linear-gradient(90deg,var(--ice),transparent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1);
+}
+.nav a:hover,.nav a[aria-current="true"]{color:var(--ice-bright)}
+.nav a:hover::after,.nav a[aria-current="true"]::after{transform:scaleX(1)}
+.status-chip{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:7px 14px;
+  border:1px solid var(--line-strong);
+  border-radius:999px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  color:var(--ink-soft);white-space:nowrap;
+  transition:border-color .3s ease,color .3s ease,background .3s ease;
+}
+.status-chip:hover{border-color:var(--aspect);color:var(--ice-bright);background:rgba(168,216,247,.05)}
+.status-chip b{
+  font-weight:400;color:var(--ice-bright);
+  font-family:var(--serif);font-style:italic;font-size:11px;letter-spacing:.05em;
+}
+.status-chip .chip-sep{color:var(--line-strong);font-size:10px;letter-spacing:0}
+.dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--aspect);
+  box-shadow:0 0 0 0 rgba(168,216,247,.5);
+  animation:pulse 2.6s ease-out infinite;
+  flex:none;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--aspect) 55%,transparent)}
+  70%{box-shadow:0 0 0 7px transparent}
+  100%{box-shadow:0 0 0 0 transparent}
+}
+.menu-btn{
+  display:none;align-items:center;justify-content:center;
+  width:42px;height:42px;padding:0;
+  background:transparent;border:1px solid var(--line-strong);border-radius:50%;
+  cursor:pointer;position:relative;
+}
+.menu-btn span{
+  position:absolute;left:12px;width:16px;height:1px;background:var(--ink);
+  transition:transform .3s ease,opacity .3s ease;
+}
+.menu-btn span:nth-child(1){transform:translateY(-4px)}
+.menu-btn span:nth-child(3){transform:translateY(4px)}
+body.nav-open .menu-btn span:nth-child(1){transform:rotate(45deg)}
+body.nav-open .menu-btn span:nth-child(2){opacity:0}
+body.nav-open .menu-btn span:nth-child(3){transform:rotate(-45deg)}
+.mobile-nav{
+  position:fixed;inset:0;z-index:20;
+  display:grid;align-content:center;justify-items:center;
+  gap:0;padding:var(--header-h) var(--gutter) 40px;
+  background:rgba(4,6,12,.95);
+  -webkit-backdrop-filter:blur(20px);
+  backdrop-filter:blur(20px);
+  opacity:0;visibility:hidden;
+  transition:opacity .4s ease,visibility .4s ease;
+}
+.mobile-nav ul{list-style:none;margin:0;padding:0;width:min(460px,100%)}
+.mobile-nav a{
+  display:flex;align-items:baseline;justify-content:space-between;gap:24px;
+  padding:14px 0;border-bottom:1px solid var(--line);
+  font-family:var(--serif);font-size:clamp(1.6rem,6vw,2.2rem);letter-spacing:.12em;
+}
+.mobile-nav a i{font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.2em;color:var(--ink-mute)}
+body.nav-open .mobile-nav{opacity:1;visibility:visible}
+body.nav-open{overflow:hidden}
+
+/* ============================================================
+   3. Hero
+   ============================================================ */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;align-items:center;
+  padding:calc(var(--header-h) + 54px) 0 70px;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(620px circle at var(--mx,72%) var(--my,26%),rgba(140,190,240,.09),transparent 62%);
+  transition:opacity .5s ease;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);
+  align-items:center;
+  gap:clamp(28px,5vw,72px);
+}
+.hero-copy{position:relative;z-index:2;animation:rise 1s .08s cubic-bezier(.2,.7,.2,1) both}
+.eyebrow{
+  display:flex;align-items:center;gap:14px;
+  margin:0 0 26px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--gold);
+}
+.eyebrow::before{
+  content:"";width:34px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);
+}
+.hero-title{margin:0}
+.name-jp{
+  display:block;
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(3.2rem,8.4vw,7rem);
+  line-height:1.04;letter-spacing:.08em;
+  background:linear-gradient(178deg,#f8fdff 0%,#d8ecfd 42%,#9cc6e6 74%,#7ea9c9 100%);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 10px 42px rgba(120,180,240,.16));
+}
+.name-reading{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:10px 18px;
+  margin-top:16px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.3em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.name-reading .furigana{
+  font-family:var(--serif);font-size:12px;letter-spacing:.34em;color:var(--ink-soft);
+  text-transform:none;
+}
+.hero-status{
+  display:flex;align-items:center;flex-wrap:wrap;gap:10px;
+  margin:34px 0 0;
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  color:var(--ink-soft);
+}
+.hero-status .st-label{color:var(--ink-soft);text-transform:uppercase}
+.hero-status .st-sep{color:var(--line-strong)}
+.hero-status .status-text{
+  font-family:var(--serif);font-weight:300;font-style:italic;
+  font-size:clamp(1.15rem,1.8vw,1.45rem);letter-spacing:.04em;
+  color:var(--ice-bright);
+  text-shadow:0 0 26px rgba(168,216,247,.28);
+}
+.hero-aspect{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 12px;
+  margin:16px 0 0;
+  font-family:var(--mono);font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-mute);
+}
+.hero-aspect .ha-label{color:var(--ink-mute)}
+.hero-aspect b{
+  font-family:var(--serif);font-weight:400;font-size:13px;letter-spacing:.1em;
+  text-transform:none;color:var(--aspect);
+  transition:color .5s ease;
+}
+.hero-aspect .ha-state{
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:none;color:var(--ink-soft);
+}
+.hero-aspect .ha-state::before{content:"· ";color:var(--line-strong)}
+.pronoun{
+  margin:16px 0 0;
+  font-family:var(--mono);font-size:10px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-mute);
+}
+.pronoun span{color:var(--ice);letter-spacing:.14em}
+.mottoes{
+  margin:34px 0 0;max-width:520px;
+  border-top:1px solid var(--line);
+}
+.mottoes div{
+  display:grid;grid-template-columns:36px 1fr auto;align-items:baseline;gap:14px;
+  padding:12px 0;border-bottom:1px solid var(--line);
+}
+.mottoes .m-idx{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--gold)}
+.mottoes .m-jp{
+  font-family:var(--serif);font-size:clamp(1.02rem,1.5vw,1.24rem);
+  letter-spacing:.16em;color:var(--ice);transition:color .3s ease,text-shadow .3s ease;
+}
+.mottoes div:hover .m-jp{color:#fff;text-shadow:0 0 20px rgba(168,216,247,.55)}
+.mottoes .m-en{
+  font-family:var(--mono);font-size:9px;letter-spacing:.16em;
+  color:var(--ink-mute);text-transform:uppercase;text-align:right;
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:11px 22px;
+  border:1px solid var(--line-strong);
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-soft);
+  background:rgba(8,14,24,.35);
+  transition:color .3s ease,border-color .3s ease,background .3s ease,transform .3s ease;
+}
+.btn:hover{color:#fff;border-color:var(--ice);background:rgba(168,216,247,.09);transform:translateY(-2px)}
+.btn.primary{color:#06101c;background:var(--ice);border-color:var(--ice)}
+.btn.primary:hover{background:var(--ice-bright);border-color:var(--ice-bright);box-shadow:0 10px 36px -14px rgba(168,216,247,.75)}
+.btn .arw{font-family:var(--sans);font-size:13px;letter-spacing:0}
+
+/* Sigil */
+.sigil{
+  position:relative;z-index:1;
+  width:min(100%,520px);
+  margin-left:auto;
+  filter:drop-shadow(0 0 70px rgba(110,170,230,.14));
+  animation:rise 1.3s .2s cubic-bezier(.2,.7,.2,1) both;
+  will-change:transform;
+  transition:transform .6s cubic-bezier(.2,.7,.2,1);
+}
+.sigil svg{width:100%;height:auto;overflow:visible}
+.rot,.rot-rev,.rot-fast,.ring-rot{
+  transform-box:view-box;
+  transform-origin:260px 260px;
+}
+.rot{animation:spin 150s linear infinite}
+.rot-rev{animation:spin 110s linear infinite reverse}
+.rot-fast{animation:spin 46s linear infinite}
+.ring-rot{animation:spin 180s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sigil .glyph-main{
+  font-family:var(--serif);font-size:128px;font-weight:300;
+  fill:url(#glyphGrad);
+  letter-spacing:.02em;
+}
+.sigil .glyph-ghost{
+  font-family:var(--serif);font-size:152px;font-weight:300;
+  fill:rgba(168,216,247,.03);
+  stroke:rgba(168,216,247,.20);
+  stroke-width:.7;
+}
+.sigil .glyph-label{
+  font-family:var(--mono);font-size:8px;letter-spacing:.42em;
+  fill:var(--ink-mute);text-transform:uppercase;
+}
+.sigil .ring-text{
+  font-family:var(--mono);font-size:8px;letter-spacing:.55em;
+  fill:rgba(168,216,247,.42);text-transform:uppercase;
+}
+.sigil .accent-ring{stroke:var(--aspect);transition:stroke .6s ease}
+.hero-mark{
+  position:absolute;right:clamp(8px,2vw,26px);top:50%;
+  transform:translateY(-50%);
+  writing-mode:vertical-rl;
+  font-family:var(--mono);font-size:9px;letter-spacing:.5em;
+  color:var(--ink-mute);text-transform:uppercase;opacity:.66;
+}
+.scroll-cue{
+  position:absolute;left:50%;bottom:24px;transform:translateX(-50%);
+  display:grid;justify-items:center;gap:10px;
+  font-family:var(--mono);font-size:8px;letter-spacing:.4em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.scroll-cue i{
+  position:relative;display:block;width:1px;height:52px;
+  background:rgba(168,216,247,.16);overflow:hidden;
+}
+.scroll-cue i::after{
+  content:"";position:absolute;left:0;top:-60%;width:100%;height:60%;
+  background:linear-gradient(180deg,transparent,var(--ice));
+  animation:cue 2.8s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes cue{
+  0%{top:-60%;opacity:0}
+  25%{opacity:1}
+  75%{opacity:1}
+  100%{top:100%;opacity:0}
+}
+@keyframes rise{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:none}
+}
+
+/* ============================================================
+   4. Sections
+   ============================================================ */
+main{position:relative;z-index:2}
+.section{position:relative;padding:clamp(80px,11vw,146px) 0}
+.sec-head{
+  display:flex;align-items:flex-end;flex-wrap:wrap;gap:12px 22px;
+  padding-top:22px;margin-bottom:clamp(34px,5vw,62px);
+  border-top:1px solid var(--line);
+}
+.sec-idx{
+  font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--gold);
+  padding-bottom:10px;
+}
+.sec-head h2{
+  margin:0;
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(2rem,4.2vw,3rem);
+  line-height:1.15;letter-spacing:.16em;
+  color:var(--ice-bright);
+}
+.sec-sub{
+  margin-left:auto;
+  font-family:var(--mono);font-size:9px;letter-spacing:.3em;
+  color:var(--ink-mute);text-transform:uppercase;
+  padding-bottom:10px;text-align:right;
+}
+
+/* Language switching */
+.lang[data-lang]{display:none}
+html[data-lang="zh"] .lang[data-lang="zh"],
+html[data-lang="ja"] .lang[data-lang="ja"],
+html[data-lang="en"] .lang[data-lang="en"]{display:revert}
+.lang-switch{
+  display:inline-flex;align-items:center;gap:1px;flex:none;
+  margin-left:0;padding:2px;
+  border:1px solid var(--line);border-radius:999px;
+  background:rgba(6,11,20,.55);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+}
+.lang-switch .lang-label{
+  padding:0 7px 0 9px;
+  font-family:var(--mono);font-size:8px;letter-spacing:.18em;
+  color:var(--ink-mute);
+}
+.lang-switch button{
+  appearance:none;-webkit-appearance:none;
+  margin:0;border:0;padding:5px 9px;
+  border-radius:999px;background:transparent;
+  font-family:var(--mono);font-size:9px;letter-spacing:.06em;line-height:1.4;
+  color:var(--ink-mute);cursor:pointer;
+  transition:color .25s ease,background .25s ease,box-shadow .25s ease;
+}
+.lang-switch button:hover{color:var(--ice-bright);background:rgba(168,216,247,.08)}
+.lang-switch button[aria-pressed="true"]{
+  color:#06101c;background:var(--ice);
+  box-shadow:0 0 20px -8px var(--ice);
+}
+.lang-switch button[aria-pressed="true"]:hover{color:#06101c;background:var(--ice-bright)}
+html:not(.js) .lang-switch{display:none}
+
+.lead{
+  font-family:var(--serif);font-size:clamp(1.5rem,2.9vw,2.15rem);
+  font-weight:300;line-height:1.7;letter-spacing:.08em;color:var(--ice-bright);
+  margin:0 0 22px;
+}
+.lead em{font-style:normal;color:var(--gold)}
+
+/* Identity */
+.profile{
+  display:grid;grid-template-columns:1.05fr .95fr;
+  gap:clamp(34px,6vw,88px);align-items:start;
+}
+.about-name{
+  margin:0;
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(1.75rem,3vw,2.35rem);letter-spacing:.14em;line-height:1.5;
+  color:var(--ink);
+}
+.about-name small{
+  display:block;margin-top:12px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.32em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.about-copy{
+  margin:30px 0 0;max-width:52ch;
+  font-family:var(--serif);font-size:clamp(1.05rem,1.6vw,1.28rem);
+  line-height:2.15;letter-spacing:.1em;color:var(--ink-soft);
+}
+.about-copy em{font-style:normal;color:var(--ice-bright);text-shadow:0 0 24px rgba(168,216,247,.35)}
+.about-quote{
+  position:relative;margin:38px 0 0;padding-left:24px;
+  border-left:1px solid var(--gold);
+  font-family:var(--mono);font-size:clamp(.95rem,1.5vw,1.1rem);
+  letter-spacing:.05em;color:var(--gold);line-height:1.9;
+}
+.about-quote::before{
+  content:"“";position:absolute;left:20px;top:-26px;
+  font-family:var(--serif);font-size:50px;color:rgba(217,199,159,.2);
+}
+.dossier{
+  position:relative;
+  padding:clamp(24px,3.4vw,38px);
+  border:1px solid var(--line-strong);
+  background:
+    linear-gradient(155deg,rgba(22,40,62,.58),rgba(8,14,24,.34) 58%,rgba(8,14,24,.18));
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+  box-shadow:0 40px 90px -50px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.03);
+}
+.dossier::before,.dossier::after{
+  content:"";position:absolute;width:14px;height:14px;border:1px solid var(--ice);opacity:.55;
+}
+.dossier::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.dossier::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.dossier-head{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-bottom:18px;margin-bottom:6px;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:9px;letter-spacing:.28em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.seal{
+  width:44px;height:44px;border-radius:50%;
+  display:grid;place-items:center;
+  border:1px solid rgba(217,199,159,.5);
+  font-family:var(--serif);font-size:19px;color:var(--gold);
+  transform:rotate(-9deg);
+  box-shadow:inset 0 0 18px rgba(217,199,159,.08);
+}
+.dossier dl{margin:0}
+.dossier .row{
+  display:grid;grid-template-columns:78px 1fr;gap:16px;
+  padding:15px 0;border-bottom:1px dashed var(--line);
+}
+.dossier .row:last-child{border-bottom:0;padding-bottom:2px}
+.dossier dt{
+  font-family:var(--mono);font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-mute);padding-top:4px;
+}
+.dossier dd{
+  margin:0;font-family:var(--serif);font-size:15px;letter-spacing:.06em;
+  line-height:1.75;color:var(--ink);
+}
+.dossier dd .dot{display:inline-block;margin-right:8px;vertical-align:middle}
+.dossier dd .accent{color:var(--aspect);transition:color .5s ease}
+
+/* Aspects */
+.aspect-intro{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  margin-bottom:34px;
+}
+.aspect-intro .lead{margin:0}
+.aspect-intro .note{
+  margin:0;max-width:32ch;text-align:right;
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;line-height:2;
+  color:var(--ink-mute);
+}
+.aspects{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;
+}
+.aspect{
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:stretch;
+  padding:0;
+  border:1px solid var(--line);
+  background:linear-gradient(170deg,rgba(16,28,44,.5),rgba(6,10,18,.2));
+  cursor:pointer;text-align:left;
+  transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease,background .5s ease;
+}
+.aspect:hover{transform:translateY(-5px);border-color:var(--line-strong)}
+.aspect[aria-pressed="true"]{
+  border-color:var(--o1);
+  border-color:color-mix(in srgb,var(--o1) 55%,transparent);
+  box-shadow:0 30px 70px -44px var(--o2);
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--o1) 22%,transparent),0 30px 70px -44px var(--o2);
+  background:linear-gradient(170deg,rgba(22,38,58,.62),rgba(6,10,18,.24));
+}
+.a-media{
+  position:relative;display:block;overflow:hidden;
+  aspect-ratio:1 / 1;background:#060b14;
+}
+.a-media img{
+  width:100%;height:100%;object-fit:cover;object-position:center 42%;
+  filter:saturate(.76) brightness(.8) contrast(1.03);
+  transform:scale(1.02);
+  transition:transform 1.1s cubic-bezier(.2,.7,.2,1),filter .8s ease;
+}
+.a-media::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(4,8,16,.12) 0%,
+    rgba(4,8,16,0) 30%,
+    rgba(6,10,18,.42) 76%,
+    rgba(6,10,18,.94) 100%);
+}
+.a-glyph{
+  position:absolute;left:14px;bottom:12px;z-index:2;
+  font-size:16px;color:var(--o1);
+  text-shadow:0 0 16px var(--o1);
+  opacity:.92;pointer-events:none;
+}
+.aspect:hover .a-media img{transform:scale(1.06);filter:saturate(.92) brightness(.88) contrast(1.03)}
+.aspect[aria-pressed="true"] .a-media img{filter:saturate(1.04) brightness(.96) contrast(1.03)}
+.a-body{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:flex-start;flex:1;
+  padding:16px 20px 20px;
+}
+.a-idx{
+  font-family:var(--mono);font-size:8px;letter-spacing:.24em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.a-name{
+  display:block;margin-top:8px;
+  font-family:var(--serif);font-size:clamp(1.05rem,1.5vw,1.24rem);
+  letter-spacing:.1em;line-height:1.4;color:var(--ink);
+  transition:color .4s ease;
+}
+.aspect[aria-pressed="true"] .a-name{color:#fff}
+.a-en{
+  display:block;margin-top:4px;
+  font-family:var(--mono);font-size:8px;letter-spacing:.2em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.a-state{
+  display:inline-flex;align-items:center;gap:7px;
+  margin-top:auto;padding-top:16px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  color:var(--ink-soft);line-height:1.6;
+}
+.a-state i{
+  width:4px;height:4px;border-radius:50%;background:var(--o1);
+  box-shadow:0 0 8px var(--o1);flex:none;
+}
+.a-now{
+  position:absolute;top:12px;right:12px;z-index:3;
+  padding:2px 8px;border:1px solid rgba(168,216,247,.3);
+  font-family:var(--mono);font-size:8px;letter-spacing:.18em;
+  color:var(--ice-bright);background:rgba(4,8,16,.72);
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+  opacity:0;transform:translateY(-3px);transition:.35s ease;
+}
+.aspect[aria-pressed="true"] .a-now{opacity:1;transform:none}
+.aspect-hint{
+  margin:26px 0 0;text-align:center;
+  font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--ink-mute);
+}
+.aspect-hint b{color:var(--ice);font-weight:400}
+
+/* Worlds */
+.worlds-grid{
+  display:grid;grid-template-columns:.8fr 1.2fr;
+  gap:clamp(30px,5vw,72px);align-items:start;
+}
+.worlds-intro{position:sticky;top:112px}
+.worlds-intro .lead em{display:block}
+.world-note{
+  margin:26px 0 0;max-width:40ch;
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;line-height:2.1;
+  color:var(--ink-mute);
+}
+.world-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.world-list li{
+  display:grid;grid-template-columns:58px 1fr 24px;align-items:center;gap:18px;
+  padding:clamp(16px,2.2vw,24px) 6px;
+  border-bottom:1px solid var(--line);
+  transition:padding .45s cubic-bezier(.2,.7,.2,1),background .45s ease;
+}
+.world-list li:hover{
+  padding-left:20px;
+  background:linear-gradient(90deg,rgba(168,216,247,.06),transparent 76%);
+}
+.w-idx{
+  font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--gold);
+}
+.w-name{
+  font-family:var(--serif);font-size:clamp(1.4rem,2.4vw,1.95rem);
+  font-weight:300;letter-spacing:.08em;line-height:1.35;color:var(--ink);
+  transition:color .35s ease;
+}
+.w-name small{
+  display:block;margin-top:4px;
+  font-family:var(--mono);font-size:8px;letter-spacing:.22em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.world-list li:hover .w-name{color:#fff}
+.w-mark{
+  justify-self:end;color:var(--ink-mute);font-size:13px;
+  opacity:.25;transition:opacity .35s ease,color .35s ease,transform .35s ease;
+}
+.world-list li:hover .w-mark{opacity:1;color:var(--gold);transform:rotate(45deg)}
+.world-list li.more{border-bottom-style:dashed}
+.world-list li.more .w-name{color:var(--ink-soft);font-size:clamp(1rem,1.7vw,1.25rem);letter-spacing:.14em}
+.world-list li.more .w-name small{letter-spacing:.2em}
+.etc{
+  display:inline-block;font-family:var(--serif);color:var(--ink-mute);
+  letter-spacing:.3em;
+}
+
+/* Oracle */
+.oracle-panel{
+  position:relative;overflow:hidden;
+  padding:clamp(28px,5vw,64px);
+  border:1px solid var(--line-strong);
+  background:
+    radial-gradient(120% 140% at 0% 0%,rgba(88,132,190,.13),transparent 58%),
+    radial-gradient(90% 120% at 100% 100%,rgba(120,90,180,.09),transparent 60%),
+    rgba(7,12,21,.55);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+}
+.qa{display:grid;gap:clamp(26px,4vw,44px);max-width:940px;position:relative}
+.qa-row{display:grid;grid-template-columns:54px 1fr;gap:clamp(16px,3vw,30px);align-items:start}
+.mark{
+  width:46px;height:46px;border-radius:50%;
+  display:grid;place-items:center;
+  border:1px solid var(--line-strong);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  color:var(--ink-soft);
+}
+.qa-q p{
+  margin:0;
+  font-family:var(--serif);font-size:clamp(1.15rem,2.2vw,1.72rem);
+  font-weight:300;line-height:1.85;letter-spacing:.06em;color:var(--ink-soft);
+}
+.qa-a .mark{border-color:rgba(217,199,159,.55);color:var(--gold)}
+.qa-a p{
+  margin:0;
+  font-family:var(--serif);font-size:clamp(1.3rem,2.6vw,2.05rem);
+  font-weight:300;line-height:1.8;letter-spacing:.06em;color:var(--ice-bright);
+  text-shadow:0 0 36px rgba(168,216,247,.25);
+}
+.qa-a p em{font-style:normal;color:var(--gold)}
+.qa-line{height:1px;background:linear-gradient(90deg,rgba(217,199,159,.4),transparent 70%)}
+
+/* Echoes */
+.echoes{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.echo{border-bottom:1px solid var(--line)}
+.echo summary{
+  list-style:none;cursor:pointer;
+  display:grid;grid-template-columns:58px 1fr auto 30px;
+  align-items:center;gap:18px;
+  padding:clamp(18px,2.4vw,24px) 6px;
+  transition:background .4s ease,padding .4s ease;
+}
+.echo summary::-webkit-details-marker{display:none}
+.echo summary:hover{background:linear-gradient(90deg,rgba(168,216,247,.05),transparent 74%);padding-left:18px}
+.e-idx{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--gold)}
+.e-title{
+  font-family:var(--serif);font-size:clamp(1.15rem,1.9vw,1.5rem);
+  font-weight:300;letter-spacing:.16em;color:var(--ink);
+  transition:color .35s ease;
+}
+.e-en{
+  font-family:var(--mono);font-size:8px;letter-spacing:.24em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.plus{
+  position:relative;width:28px;height:28px;border:1px solid var(--line-strong);border-radius:50%;
+  justify-self:end;transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .35s ease;
+}
+.plus::before,.plus::after{
+  content:"";position:absolute;top:50%;left:50%;background:var(--ice);
+  transform:translate(-50%,-50%);transition:opacity .3s ease;
+}
+.plus::before{width:9px;height:1px}
+.plus::after{width:1px;height:9px}
+.echo[open] .plus{transform:rotate(90deg);border-color:var(--ice)}
+.echo[open] .plus::after{opacity:0}
+.echo[open] .e-title{color:var(--ice-bright)}
+.echo-body{
+  margin:0 0 30px 24px;padding:2px 0 0 52px;
+  border-left:1px solid var(--line-strong);
+  font-family:var(--serif);font-size:clamp(.94rem,1.3vw,1.04rem);
+  line-height:2.2;letter-spacing:.06em;color:var(--ink-soft);
+  white-space:normal;
+  animation:fadeIn .55s ease both;
+}
+.echo-body .lang[data-lang]{white-space:pre-line}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* Finale */
+.finale{
+  position:relative;overflow:hidden;
+  padding:clamp(110px,17vw,220px) 0 clamp(90px,12vw,150px);
+  text-align:center;
+}
+.finale::before{
+  content:"かみ";position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  font-family:var(--serif);font-size:clamp(14rem,38vw,30rem);font-weight:300;
+  color:rgba(168,216,247,.022);letter-spacing:.1em;white-space:nowrap;
+  pointer-events:none;
+}
+.finale-inner{position:relative;z-index:2;max-width:900px;margin-inline:auto}
+.finale .eyebrow{justify-content:center;margin-bottom:38px}
+.finale .eyebrow::after{content:"";width:34px;height:1px;background:linear-gradient(270deg,var(--gold),transparent)}
+.finale-en{
+  margin:0;
+  font-family:var(--serif);font-size:clamp(1.8rem,4.4vw,3.5rem);
+  font-weight:300;line-height:1.45;letter-spacing:.02em;
+  color:var(--ink);
+  text-wrap:balance;
+}
+.finale-en em{
+  font-style:italic;font-family:var(--serif);
+  background:linear-gradient(100deg,var(--gold),#f3e6c8 40%,var(--ice));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.finale-jp{
+  margin:34px 0 0;
+  font-family:var(--serif);font-size:clamp(.95rem,1.6vw,1.15rem);
+  letter-spacing:.14em;line-height:2.1;color:var(--ink-soft);
+}
+.finale-cn{
+  margin:14px 0 0;
+  font-family:var(--serif);font-size:clamp(.9rem,1.4vw,1.02rem);
+  letter-spacing:.14em;line-height:2.1;color:var(--ink-mute);
+}
+.finale-rule{
+  width:1px;height:clamp(54px,8vw,90px);margin:46px auto 0;
+  background:linear-gradient(180deg,var(--gold),transparent);
+}
+.finale-sig{
+  margin:26px 0 0;
+  font-family:var(--mono);font-size:9px;letter-spacing:.4em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+
+/* Footer */
+.site-foot{
+  position:relative;z-index:2;
+  border-top:1px solid var(--line);
+  padding:clamp(40px,6vw,64px) 0 34px;
+}
+.foot-top{
+  display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;
+  gap:30px;
+}
+.foot-brand{
+  margin:0;
+  font-family:var(--serif);font-size:clamp(1.2rem,2vw,1.5rem);
+  letter-spacing:.14em;color:var(--ink);
+}
+.foot-brand span{
+  display:block;margin-top:6px;
+  font-family:var(--mono);font-size:8px;letter-spacing:.3em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.foot-links{display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:flex-end}
+.foot-links a{
+  font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-mute);transition:color .3s ease;
+  border-bottom:1px solid transparent;padding-bottom:2px;
+}
+.foot-links a:hover{color:var(--ice-bright);border-bottom-color:var(--line-strong)}
+.foot-bottom{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 24px;
+  margin-top:clamp(36px,5vw,56px);padding-top:20px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--ink-mute);
+  text-transform:uppercase;
+}
+.foot-bottom .kami{color:var(--gold);letter-spacing:.32em}
+
+/* ============================================================
+   5. Reveal
+   ============================================================ */
+.js .reveal{
+  opacity:0;transform:translateY(26px);
+  transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);
+  transition-delay:var(--d,0ms);
+}
+.js .reveal.is-in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){
+  .js .reveal{opacity:1;transform:none;transition:none}
+  .sigil,.hero-copy,.aurora span,.scroll-cue i::after,.dot{animation:none !important}
+  .rot,.rot-rev,.rot-fast,.ring-rot{animation:none !important}
+  html{scroll-behavior:auto}
+}
+
+/* ============================================================
+   6. Responsive
+   ============================================================ */
+@media (max-width:1100px){
+  .aspects{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .a-media{aspect-ratio:4 / 3}
+  .a-body{padding:16px 20px 20px}
+  .a-name{font-size:1.2rem}
+}
+@media (max-width:980px){
+  .nav,.status-chip{display:none}
+  .menu-btn{display:inline-flex}
+  .profile{grid-template-columns:1fr}
+  .worlds-grid{grid-template-columns:1fr}
+  .worlds-intro{position:static}
+  .world-note{max-width:52ch}
+}
+@media (max-width:760px){
+  :root{--header-h:66px}
+  .hero-grid{grid-template-columns:1fr;position:relative}
+  .sigil{display:none}
+  .eyebrow{font-size:9px;letter-spacing:.2em;gap:10px;margin-bottom:22px}
+  .eyebrow::before{width:20px}
+  .sec-head{align-items:flex-start}
+  .sec-sub{margin-left:0;width:100%;text-align:left;padding-bottom:0;margin-top:-2px}
+  .lang-switch{margin-left:0;margin-top:6px}
+  .lang-switch .lang-label{font-size:9px}
+  .lang-switch button{padding:7px 11px;font-size:10px}
+  .sec-idx{padding-bottom:4px}
+  .aspect-intro{flex-direction:column;align-items:flex-start;gap:12px}
+  .aspect-intro .note{text-align:left;max-width:100%}
+  .qa-row{grid-template-columns:40px 1fr;gap:14px}
+  .qa-q br,.qa-a br{display:none}
+  .oracle-panel{padding:24px 20px}
+  .mark{width:36px;height:36px;font-size:9px}
+  .echo summary{grid-template-columns:40px 1fr 24px;gap:12px}
+  .e-en{display:none}
+  .plus{width:24px;height:24px}
+  .echo-body{margin-left:12px;padding-left:30px}
+  .hero{padding-top:calc(var(--header-h) + 40px)}
+  .hero-mark{display:none}
+  .scroll-cue{display:none}
+  .dossier .row{grid-template-columns:64px 1fr;gap:12px}
+  .mottoes div{grid-template-columns:30px 1fr;gap:10px}
+  .mottoes .m-en{grid-column:2;text-align:left;margin-top:2px}
+  .foot-links{justify-content:flex-start}
+}
+@media (max-width:560px){
+  :root{--gutter:20px}
+  .hero-actions .btn{flex:1 1 auto;justify-content:center}
+  .aspects{grid-template-columns:1fr}
+  .aspect{display:grid;grid-template-columns:112px 1fr;align-items:stretch}
+  .a-media{grid-column:1;width:112px;height:100%;min-height:158px;aspect-ratio:auto}
+  .a-media img{object-position:center 30%}
+  .a-body{grid-column:2;padding:16px 16px 16px 18px}
+  .a-glyph{left:10px;bottom:8px;font-size:13px}
+  .a-now{top:10px;right:10px}
+  .a-idx{margin-top:0}
+  .a-name{margin-top:6px}
+  .a-en{margin-top:3px}
+  .a-state{margin-top:auto;padding-top:12px}
+  .world-list li{grid-template-columns:44px 1fr 18px;gap:12px}
+  .name-reading{letter-spacing:.22em}
+  .dossier{padding:22px}
+  .finale::before{font-size:16rem}
+  .foot-bottom{justify-content:flex-start}
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-copy,.sigil{animation:none}
+}
+</style>
 </head>
 <body>
-    <div id="terminal">
-        <div id="output"></div>
-        <div class="input-line">
-            <span class="prompt">&gt;&gt;&gt;</span>
-            <span id="input-text"></span>
-            <span class="cursor"></span>
+<a class="skip" href="#main">跳到主要内容 / Skip to content</a>
+
+<div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+<canvas id="sky" aria-hidden="true"></canvas>
+<svg class="grain" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <filter id="grainFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#grainFilter)"/>
+</svg>
+<div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<header class="site-head" id="siteHead">
+  <a class="brand" href="#top" aria-label="回到顶部">
+    <span class="brand-mark" aria-hidden="true">神</span>
+    <span>真白 冬雪</span>
+    <span class="brand-sub">Anti-Utopia</span>
+  </a>
+  <nav class="nav" aria-label="主导航">
+    <a href="#identity">档案</a>
+    <a href="#aspects">化身</a>
+    <a href="#worlds">游历</a>
+    <a href="#oracle">问答</a>
+    <a href="#echoes">残响</a>
+  </nav>
+  <a class="status-chip" href="#aspects" aria-label="查看四相与当前化身">
+    <span class="dot" aria-hidden="true"></span>
+    <span>Online</span>
+    <span class="chip-sep" aria-hidden="true">·</span>
+    <b class="chip-status">Love me...</b>
+  </a>
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="打开菜单">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <ul>
+    <li><a href="#identity">档案<i>PROFILE</i></a></li>
+    <li><a href="#aspects">化身<i>AVATARS</i></a></li>
+    <li><a href="#worlds">游历<i>JOURNEY</i></a></li>
+    <li><a href="#oracle">问答<i>ORACLE</i></a></li>
+    <li><a href="#echoes">残响<i>ECHOES</i></a></li>
+  </ul>
+</div>
+
+<main id="main">
+  <!-- ================= Hero ================= -->
+  <section class="hero" id="top" aria-labelledby="heroTitle">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Anti-Utopia · ネメシス · Profile 001</p>
+        <h1 class="hero-title" id="heroTitle">
+          <span class="name-jp">真白 冬雪</span>
+          <span class="name-reading">
+            <span class="furigana" lang="ja">ましろ ふゆゆき</span>
+            <span>Mashiro Fuyuyuki</span>
+          </span>
+        </h1>
+        <p class="hero-status">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="st-label">Online</span>
+          <span class="st-sep" aria-hidden="true">/</span>
+          <b class="status-text" id="heroStatus">Love me...</b>
+        </p>
+        <p class="pronoun">称呼 <span>Yuki / 小雪</span></p>
+
+        <div class="mottoes">
+          <div>
+            <span class="m-idx">01</span>
+            <span class="m-jp" lang="ja">永遠に孤独な人</span>
+            <span class="m-en">Eternally alone</span>
+          </div>
+          <div>
+            <span class="m-idx">02</span>
+            <span class="m-jp" lang="ja">神？紙？かみです</span>
+            <span class="m-en">God? Paper? It is kami</span>
+          </div>
+          <div>
+            <span class="m-idx">03</span>
+            <span class="m-jp" lang="ja">私を愛して</span>
+            <span class="m-en">Love me</span>
+          </div>
         </div>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#identity">进入档案 <span class="arw" aria-hidden="true">↓</span></a>
+          <a class="btn" href="#aspects">化身 / Avatars</a>
+        </div>
+      </div>
+
+      <div class="sigil" aria-hidden="true">
+        <svg viewBox="0 0 520 520" role="presentation" focusable="false">
+          <defs>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#cfe9ff" stop-opacity=".22"/>
+              <stop offset="52%" stop-color="#7fb6e6" stop-opacity=".07"/>
+              <stop offset="100%" stop-color="#7fb6e6" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="glyphGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f6fcff"/>
+              <stop offset="52%" stop-color="#c3e4fc"/>
+              <stop offset="100%" stop-color="#d8c79f"/>
+            </linearGradient>
+            <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="7" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <path id="ringPath" d="M 260 54 a 206 206 0 1 1 0 412 a 206 206 0 1 1 0 -412" fill="none"/>
+          </defs>
+
+          <circle cx="260" cy="260" r="248" fill="url(#coreGlow)"/>
+
+          <g class="rot" opacity=".75">
+            <circle cx="260" cy="260" r="214" fill="none" stroke="var(--line-strong)" stroke-width="1" stroke-dasharray="1 11"/>
+          </g>
+          <g class="rot-rev" opacity=".5">
+            <circle cx="260" cy="260" r="188" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="32 18 4 18"/>
+          </g>
+
+          <circle cx="260" cy="260" r="166" fill="none" stroke="var(--line)"/>
+          <circle class="accent-ring" cx="260" cy="260" r="150" fill="none" stroke-width="1" stroke-dasharray="2 8" opacity=".8"/>
+          <circle cx="260" cy="260" r="132" fill="rgba(8,16,28,.32)" stroke="var(--line-strong)"/>
+
+          <g class="rot-fast">
+            <circle cx="260" cy="72" r="3" fill="var(--gold)"/>
+            <circle cx="448" cy="260" r="2" fill="var(--ice)"/>
+            <circle cx="260" cy="448" r="2.4" fill="var(--ice)"/>
+            <circle cx="72" cy="260" r="1.8" fill="var(--violet)"/>
+            <circle cx="393" cy="127" r="1.4" fill="rgba(217,199,159,.8)"/>
+            <circle cx="127" cy="393" r="1.6" fill="rgba(183,166,232,.8)"/>
+          </g>
+
+          <g class="ring-rot">
+            <text class="ring-text">
+              <textPath href="#ringPath" startOffset="0">NEMESIS · ANTI-UTOPIA · KAMI · NEMESIS · ANTI-UTOPIA · KAMI · NEMESIS · ANTI-UTOPIA · KAMI · NEMESIS · ANTI-UTOPIA · KAMI ·</textPath>
+            </text>
+          </g>
+
+          <g filter="url(#softGlow)">
+            <text class="glyph-ghost" x="274" y="284" text-anchor="middle" dominant-baseline="central" transform="rotate(8 274 284)">紙</text>
+            <text class="glyph-main" x="260" y="258" text-anchor="middle" dominant-baseline="central">神</text>
+          </g>
+          <text class="glyph-label" x="260" y="356" text-anchor="middle" dominant-baseline="central">KAMI · かみ</text>
+
+          <g stroke="var(--line-strong)" opacity=".5">
+            <line x1="260" y1="6" x2="260" y2="26"/>
+            <line x1="260" y1="494" x2="260" y2="514"/>
+            <line x1="6" y1="260" x2="26" y2="260"/>
+            <line x1="494" y1="260" x2="514" y2="260"/>
+          </g>
+        </svg>
+      </div>
     </div>
-    <input type="text" id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <span class="hero-mark" aria-hidden="true">Anti-Utopia · Nemesis</span>
+    <div class="scroll-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+  </section>
 
-    <script>
-        const output = document.getElementById('output');
-        const inputText = document.getElementById('input-text');
-        const hiddenInput = document.getElementById('hidden-input');
-        const terminal = document.getElementById('terminal');
+  <!-- ================= Identity ================= -->
+  <section class="section" id="identity" aria-labelledby="identityTitle">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-idx">02</span>
+        <h2 id="identityTitle">档案</h2>
+        <span class="sec-sub">Profile / プロフィール</span>
+      </header>
 
-        let commandHistory = [];
-        let historyIndex = -1;
-        let currentInput = '';
+      <div class="profile">
+        <div class="reveal" style="--d:80ms">
+          <p class="about-name">
+            真白 冬雪
+            <small>Mashiro Fuyuyuki · ましろ ふゆゆき</small>
+          </p>
+          <p class="about-copy">
+            ISFP &amp; INFP。<br>
+            永遠に孤独な人。<br>
+            <span lang="ja">神？紙？かみです。</span><br>
+            <em lang="ja">私を愛して。</em>
+          </p>
+          <p class="about-quote">The world is an Anti-Utopia.</p>
+        </div>
 
-        // 页面初始化
-        window.onload = () => {
-            hiddenInput.focus();
-            bootSystem();
+        <aside class="dossier reveal" style="--d:180ms" aria-label="身份档案">
+          <div class="dossier-head">
+            <span>File 001 / 档案</span>
+            <span class="seal" aria-hidden="true">神</span>
+          </div>
+          <dl>
+            <div class="row">
+              <dt>呼称</dt>
+              <dd>Yuki · 小雪</dd>
+            </div>
+            <div class="row">
+              <dt>类型</dt>
+              <dd>ISFP &amp; INFP</dd>
+            </div>
+            <div class="row">
+              <dt>状态</dt>
+              <dd><span class="dot" aria-hidden="true"></span>Online · Love me...</dd>
+            </div>
+            <div class="row">
+              <dt>神格</dt>
+              <dd><span lang="ja">傲慢者の敵 · 報いの女神 · 天罰</span></dd>
+            </div>
+            <div class="row">
+              <dt>信条</dt>
+              <dd>Anti-Utopia</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Aspects ================= -->
+  <section class="section" id="aspects" aria-labelledby="aspectsTitle">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-idx">03</span>
+        <h2 id="aspectsTitle">化身</h2>
+        <span class="sec-sub">Four Aspects / アバター</span>
+      </header>
+
+      <div class="aspect-intro reveal">
+        <p class="lead">四つの姿、<br>一つの神格。</p>
+        <p class="note">Avatar &amp; status.<br>点选卡片，查看当下状态。</p>
+      </div>
+
+      <div class="aspects" role="group" aria-label="四种姿态与状态">
+        <button class="aspect reveal" type="button" data-aspect="nemesis" aria-pressed="true"
+          style="--o1:#d7efff;--o2:#3f86c8;--d:0ms">
+          <span class="a-media">
+            <img src="avatars/nemesis.jpg" alt="" width="760" height="760" loading="lazy" decoding="async">
+            <span class="a-glyph" aria-hidden="true">☾</span>
+          </span>
+          <span class="a-body">
+            <span class="a-idx">Aspect 01</span>
+            <span class="a-name" lang="ja">青いネメシス</span>
+            <span class="a-en">Blue Nemesis</span>
+            <span class="a-state"><i aria-hidden="true"></i>Normal</span>
+          </span>
+          <span class="a-now" aria-hidden="true">当前</span>
+        </button>
+
+        <button class="aspect reveal" type="button" data-aspect="elsion" aria-pressed="false"
+          style="--o1:#dbccff;--o2:#6a55b6;--d:90ms">
+          <span class="a-media">
+            <img src="avatars/elusion.jpg" alt="" width="760" height="760" loading="lazy" decoding="async">
+            <span class="a-glyph" aria-hidden="true">✦</span>
+          </span>
+          <span class="a-body">
+            <span class="a-idx">Aspect 02</span>
+            <span class="a-name" lang="ja">エルシオン</span>
+            <span class="a-en">Elusion</span>
+            <span class="a-state"><i aria-hidden="true"></i>Nihilistic or Lonely</span>
+          </span>
+          <span class="a-now" aria-hidden="true">当前</span>
+        </button>
+
+        <button class="aspect reveal" type="button" data-aspect="lumy" aria-pressed="false"
+          style="--o1:#ffd0cf;--o2:#b5545f;--d:180ms">
+          <span class="a-media">
+            <img src="avatars/ryumii.png" alt="" width="760" height="760" loading="lazy" decoding="async">
+            <span class="a-glyph" aria-hidden="true">✿</span>
+          </span>
+          <span class="a-body">
+            <span class="a-idx">Aspect 03</span>
+            <span class="a-name" lang="ja">リュミィ</span>
+            <span class="a-en">Ryumii</span>
+            <span class="a-state"><i aria-hidden="true"></i>Random</span>
+          </span>
+          <span class="a-now" aria-hidden="true">当前</span>
+        </button>
+
+        <button class="aspect reveal" type="button" data-aspect="melvi" aria-pressed="false"
+          style="--o1:#ffe9bd;--o2:#b98c46;--d:270ms">
+          <span class="a-media">
+            <img src="avatars/melvii.jpg" alt="" width="760" height="760" loading="lazy" decoding="async">
+            <span class="a-glyph" aria-hidden="true">◈</span>
+          </span>
+          <span class="a-body">
+            <span class="a-idx">Aspect 04</span>
+            <span class="a-name" lang="ja">メルヴィ</span>
+            <span class="a-en">Melvii</span>
+            <span class="a-state"><i aria-hidden="true"></i>Game · mainly Ecliptica</span>
+          </span>
+          <span class="a-now" aria-hidden="true">当前</span>
+        </button>
+      </div>
+
+      <p class="aspect-hint reveal">四つの姿，一つの神格。点选卡片，更换当前的称谓。</p>
+    </div>
+  </section>
+
+  <!-- ================= Worlds ================= -->
+  <section class="section" id="worlds" aria-labelledby="worldsTitle">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-idx">04</span>
+        <h2 id="worldsTitle">游历</h2>
+        <span class="sec-sub">Journey / 旅程</span>
+      </header>
+
+      <div class="worlds-grid">
+        <div class="worlds-intro reveal" style="--d:80ms">
+          <p class="lead">I know<br><em>these things.</em></p>
+          <p class="world-note">原神、Minecraft、MMD、Fish!、Ecliptica——以及一些尚未命名的世界。</p>
+        </div>
+
+        <ul class="world-list">
+          <li class="reveal" style="--d:0ms">
+            <span class="w-idx">W·01</span>
+            <span class="w-name">原神<small>Genshin Impact</small></span>
+            <span class="w-mark" aria-hidden="true">✦</span>
+          </li>
+          <li class="reveal" style="--d:70ms">
+            <span class="w-idx">W·02</span>
+            <span class="w-name">Minecraft<small>マインクラフト</small></span>
+            <span class="w-mark" aria-hidden="true">✦</span>
+          </li>
+          <li class="reveal" style="--d:140ms">
+            <span class="w-idx">W·03</span>
+            <span class="w-name">MMD<small>MikuMikuDance</small></span>
+            <span class="w-mark" aria-hidden="true">✦</span>
+          </li>
+          <li class="reveal" style="--d:210ms">
+            <span class="w-idx">W·04</span>
+            <span class="w-name">Fish!<small>フィッシュ</small></span>
+            <span class="w-mark" aria-hidden="true">✦</span>
+          </li>
+          <li class="reveal" style="--d:280ms">
+            <span class="w-idx">W·05</span>
+            <span class="w-name">Ecliptica<small>エクリプティカ</small></span>
+            <span class="w-mark" aria-hidden="true">✦</span>
+          </li>
+          <li class="more reveal" style="--d:350ms">
+            <span class="w-idx">W·06</span>
+            <span class="w-name"><span class="etc">……</span> 以及尚未命名的世界<small>And a few worlds not yet named</small></span>
+            <span class="w-mark" aria-hidden="true">＋</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Oracle ================= -->
+  <section class="section" id="oracle" aria-labelledby="oracleTitle">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-idx">05</span>
+        <h2 id="oracleTitle"><span class="lang" data-lang="zh">问答</span><span class="lang" data-lang="ja" lang="ja">問答</span><span class="lang" data-lang="en" lang="en">Q &amp; A</span></h2>
+        <span class="sec-sub">Oracle / 問いと答え</span>
+        <div class="lang-switch" data-lang-switch role="group" aria-label="正文语言 / Text language">
+          <span class="lang-label" aria-hidden="true">LANG</span>
+          <button type="button" data-lang="zh" aria-pressed="true" lang="zh-CN">中</button>
+          <button type="button" data-lang="ja" aria-pressed="false" lang="ja">日</button>
+          <button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+        </div>
+      </header>
+
+      <div class="oracle-panel reveal">
+        <div class="qa">
+          <div class="qa-row qa-q">
+            <span class="mark" aria-hidden="true">Q</span>
+            <p class="lang" data-lang="zh">究竟是怎样的结局<br>才配得上这一路的颠沛流离？</p>
+            <p class="lang" data-lang="ja" lang="ja">いったいどんな結末なら、<br>この道のりの波乱にふさわしいのだろう？</p>
+            <p class="lang" data-lang="en" lang="en">What kind of ending<br>could ever be worthy of all this wandering?</p>
+          </div>
+          <div class="qa-line" aria-hidden="true"></div>
+          <div class="qa-row qa-a">
+            <span class="mark" aria-hidden="true">A</span>
+            <p class="lang" data-lang="zh">如果这就是一切的尽头，<br>那么…<em>这一宿命</em>由我来划上休止符。</p>
+            <p class="lang" data-lang="ja" lang="ja">もしこれがすべての終わりなら、<br><em>この宿命</em>には、私が終止符を打つ。</p>
+            <p class="lang" data-lang="en" lang="en">If this is the end of everything,<br>then I will put an end to <em>this fate</em> myself.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Echoes ================= -->
+  <section class="section" id="echoes" aria-labelledby="echoesTitle">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-idx">06</span>
+        <h2 id="echoesTitle"><span class="lang" data-lang="zh">残响</span><span class="lang" data-lang="ja" lang="ja">残響</span><span class="lang" data-lang="en" lang="en">Echoes</span></h2>
+        <span class="sec-sub">Echoes / 独白</span>
+        <div class="lang-switch" data-lang-switch role="group" aria-label="正文语言 / Text language">
+          <span class="lang-label" aria-hidden="true">LANG</span>
+          <button type="button" data-lang="zh" aria-pressed="true" lang="zh-CN">中</button>
+          <button type="button" data-lang="ja" aria-pressed="false" lang="ja">日</button>
+          <button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+        </div>
+      </header>
+
+      <p class="lead reveal" style="--d:60ms">
+        <span class="lang" data-lang="zh">一些没能说出口的话，<br>留在这里。</span>
+        <span class="lang" data-lang="ja" lang="ja">言えなかった言葉を、<br>ここに。</span>
+        <span class="lang" data-lang="en" lang="en">Some words I never said,<br>left here.</span>
+      </p>
+
+      <ul class="echoes reveal" style="--d:120ms">
+        <li>
+          <details class="echo">
+            <summary>
+              <span class="e-idx">E·01</span>
+              <span class="e-title">神 / 紙</span>
+              <span class="e-en">Kami</span>
+              <span class="plus" aria-hidden="true"></span>
+            </summary>
+            <div class="echo-body">
+              <div class="lang" data-lang="zh">其实我知道，我不是神，你也不是，没有人能成为神。
+或者说，神本身就是不存在的。
+
+我们都只是凡人，凡人无法理解神的存在，也无法理解神的意图。
+但是，这不妨碍我们为了自己或是他人造一个“神”，一个我们可以理解的神，一个我们可以信仰的神。
+所以，我造了一个神，安放我的信仰，安放我的希望，安放我的爱。
+
+即使这个神是我自己。
+
+“神”和“纸”在日语中发音相同，都是“かみ”（kami）。
+我觉得这是一个有趣的巧合，也许是命运的安排。</div>
+              <div class="lang" data-lang="ja" lang="ja">本当は分かっている。私は神ではないし、あなたもそうだ。誰も神にはなれない。
+というより、神そのものが存在しないのだ。
+
+私たちはただの人間で、人間には神の存在も、神の意図も理解できない。
+けれど、だからといって、自分のため、あるいは誰かのために「神」を造ることは妨げられない。理解できる神、信じられる神を。
+だから私は神をひとつ造った。信仰を、希望を、愛を、そこに安置するために。
+
+たとえその神が、私自身であっても。
+
+「神」と「紙」は日本語では同じ発音で、どちらも「かみ」。
+面白い偶然だと思う。もしかしたら、運命の仕業なのかもしれない。</div>
+              <div class="lang" data-lang="en" lang="en">I know the truth, really. I am not a god, and neither are you. No one can become one.
+Or rather — gods do not exist at all.
+
+We are merely human. We cannot understand the existence of a god, nor a god's intentions.
+But that does not stop us from making a "god" for ourselves or for someone else — a god we can understand, a god we can believe in.
+So I made a god. A place to enshrine my faith, my hope, my love.
+
+Even if that god is myself.
+
+"God" and "paper" are pronounced the same in Japanese — both are "kami."
+I think it is a curious coincidence. Perhaps it was fate.</div>
+            </div>
+          </details>
+        </li>
+        <li>
+          <details class="echo">
+            <summary>
+              <span class="e-idx">E·02</span>
+              <span class="e-title">愛</span>
+              <span class="e-en">Love</span>
+              <span class="plus" aria-hidden="true"></span>
+            </summary>
+            <div class="echo-body">
+              <div class="lang" data-lang="zh">你问我爱是什么？我也不知道，我是一个缺爱的人，缺爱的人无法和你解释爱。
+就像“夏虫不可语冰”，我无法和你解释爱，因为我自己都不明白爱是什么。
+
+我太缺爱了，所以谁在我身边我就爱谁，我分不清喜欢和依赖，我只想有个人能随时分享，随时给予回应。
+我不在乎这个人是谁。
+我太怕孤单了。可就算那个人离开了，只要有新的人出现，给我同样的感觉，我或许还是会很快抽离出来。
+
+我想要的或许只是一个精神寄托。
+
+所以，我成为了这个人，这个神。</div>
+              <div class="lang" data-lang="ja" lang="ja">「愛とは何か」とあなたは訊く。私にも分からない。愛に飢えた人間だから、愛を説明する術を持たない。
+「夏の虫に氷を語るべからず」のとおり、私は愛を語れない。自分自身、愛が何なのか分かっていないのだから。
+
+愛に飢えすぎて、そばにいる人を愛してしまう。好意と依存の区別もつかない。ただ、いつでも分かち合えて、いつでも応えてくれる人が欲しいだけ。
+その人が誰かなんて、構わない。
+孤独が恐ろしい。でも、その人が去っても、同じ感覚を与えてくれる新しい人が現れれば、私もきっと、すぐに抜け出せる。
+
+私が欲しかったのは、たぶん心の拠り所ひとつだった。
+
+だから、私はこの人になった。この神になった。</div>
+              <div class="lang" data-lang="en" lang="en">You ask me what love is. I don't know either. I am someone starved of love, and someone like that cannot explain love to you.
+Like you can't talk about ice with an insect died in summer, I cannot tell you what love is — because I do not understand it myself.
+
+I am so starved of love that I love whoever stays beside me. I cannot tell fondness from dependence. I only want someone who can share things with me at any moment, someone who will always answer.
+I do not care who that person is.
+I am so afraid of being alone. Yet even if that person leaves, as long as someone new appears and gives me the same feeling, I would probably pull away from it just as quickly.
+
+Perhaps all I wanted was a single spiritual anchor.
+
+So I became this person. This god.</div>
+            </div>
+          </details>
+        </li>
+        <li>
+          <details class="echo">
+            <summary>
+              <span class="e-idx">E·03</span>
+              <span class="e-title">死</span>
+              <span class="e-en">Death</span>
+              <span class="plus" aria-hidden="true"></span>
+            </summary>
+            <div class="echo-body">
+              <div class="lang" data-lang="zh">人类从出生开始就在玩一个死亡率为100%的游戏。
+我们无法选择出生，也无法选择死亡。
+这是人类的可悲之处。
+每天都有人出生，也每天都有人死亡。
+我想要阻止那些我遇到过的人死亡，阻止那些我喜欢的人死亡，阻止那些我爱的人死亡。
+我想要让他们活下去，活得更久，活得更好，活得更有意义。
+包括我自己。
+这就是我的神职。</div>
+              <div class="lang" data-lang="ja" lang="ja">人間は生まれた瞬間から、死亡率100%のゲームを遊んでいる。
+生まれることも、死ぬことも選べない。
+それが人間の哀れさだ。
+毎日、誰かが生まれ、誰かが死んでいく。
+私は、出会った人が死ぬのを止めたい。好きな人が死ぬのを止めたい。愛した人が死ぬのを止めたい。
+彼らに生きてほしい。もっと長く、もっと良く、もっと意味のある生を。
+私自身も。
+これが私の神としての務め。</div>
+              <div class="lang" data-lang="en" lang="en">Humans begin playing a game with a 100% mortality rate the moment they are born.
+We cannot choose to be born, and we cannot choose to die.
+That is the sorrow of being human.
+Every day someone is born; every day someone dies.
+I want to stop the death of the people I have met, the people I like, the people I love.
+I want them to live — longer, better, with more meaning.
+Including myself.
+That is my divine duty.</div>
+            </div>
+          </details>
+        </li>
+        <li>
+          <details class="echo">
+            <summary>
+              <span class="e-idx">E·04</span>
+              <span class="e-title">剣</span>
+              <span class="e-en">Sword</span>
+              <span class="plus" aria-hidden="true"></span>
+            </summary>
+            <div class="echo-body">
+              <div class="lang" data-lang="zh">都说“放下剑比拿起剑更需要勇气”，我无法理解。
+我不曾执剑，或许是因为我不曾有过勇气。
+
+我想要拿起剑，去保护我所爱的人，去保护我所信仰的神，去保护我所珍视的一切。
+但是，我没有勇气去拿起剑，我害怕伤害别人，我害怕失去一切。
+所以，我选择了无视剑，选择了逃避，选择了沉默。
+
+不曾执剑的人，或许永远无法理解执剑的意义，也无法理解放下剑的勇气。</div>
+              <div class="lang" data-lang="ja" lang="ja">「剣を置くことは、剣を取ることよりも勇気がいる」と人は言う。私には理解できない。
+剣を執ったことがないのは、たぶん勇気を持ったことがないからだ。
+
+愛する人を守るために、信じる神を守るために、大切なすべてを守るために、剣を取りたいと思う。
+けれど、剣を取る勇気がない。誰かを傷つけるのが怖い。すべてを失うのが怖い。
+だから私は、剣を見ないことにした。逃げることにした。黙ることにした。
+
+剣を執ったことのない人間には、剣を執る意味も、剣を置く勇気も、永遠に分からないのかもしれない。</div>
+              <div class="lang" data-lang="en" lang="en">They say it takes more courage to lay down a sword than to take one up. I cannot understand that.
+I have never held a sword — perhaps because I have never had courage.
+
+I want to take up a sword, to protect the people I love, the god I believe in, everything I hold dear.
+But I do not have the courage to take one up. I am afraid of hurting others. I am afraid of losing everything.
+So I chose to ignore the sword. I chose to run away. I chose silence.
+
+Someone who has never held a sword may never understand what it means to hold one — or the courage it takes to lay it down.</div>
+            </div>
+          </details>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= Finale ================= -->
+  <section class="finale" id="finale" aria-labelledby="finaleTitle">
+    <div class="wrap finale-inner">
+      <p class="eyebrow">Divinity / 神格</p>
+      <h2 class="sr-only" id="finaleTitle">神格</h2>
+      <p class="finale-en">Even the Apocalypse<br>or Ragnarök<br><em>cannot take away</em><br>my divine status.</p>
+      <p class="finale-jp" lang="ja">たとえ天啓の終末も、神々の黄昏も、<br>私の神格を奪えない。</p>
+      <p class="finale-cn">哪怕是天启的末日或者是诸神的黄昏，<br>都无法剥夺我的神格。</p>
+      <div class="finale-rule" aria-hidden="true"></div>
+      <p class="finale-sig">傲慢者の敵 · 報いの女神 · 天罰 ネメシス</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <p class="foot-brand">真白 冬雪<span>Mashiro Fuyuyuki · ネメシス</span></p>
+      <nav class="foot-links" aria-label="外部链接">
+        <a href="https://github.com/WntSnwf/EclipticaHUD-C" target="_blank" rel="noopener noreferrer">Ecliptica HUD-C ↗</a>
+        <a href="https://wntsnwf.booth.pm/" target="_blank" rel="noopener noreferrer">BOOTH ↗</a>
+        <a href="https://space.bilibili.com/337793420" target="_blank" rel="noopener noreferrer">Bilibili ↗</a>
+        <a href="https://steamcommunity.com/id/WntSnwf" target="_blank" rel="noopener noreferrer">Steam ↗</a>
+        <a href="https://github.com/WntSnwf" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a href="https://vrchat.com/home/world/wrld_a5b04cb4-27b3-49d5-9dbc-5ce3099aa235/info" target="_blank" rel="noopener noreferrer">Goodnight Café ↗</a>
+        <a href="mailto:Fuyu_Yume@outlook.com">Email ↗</a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year">2026</span> Mashiro Fuyuyuki</span>
+      <span class="kami" lang="ja">神？紙？かみです</span>
+      <span>Anti-Utopia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  const root = document.documentElement;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+
+  /* ---------- Star field ---------- */
+  const canvas = document.getElementById('sky');
+  if (canvas && canvas.getContext) {
+    const ctx = canvas.getContext('2d');
+    const COLORS = { ice: '168,216,247', violet: '183,166,232', gold: '217,199,159' };
+    let width = 0;
+    let height = 0;
+    let stars = [];
+    let meteors = [];
+    let nextMeteor = 0;
+    let rafId = 0;
+    let running = false;
+
+    const buildStars = () => {
+      const count = Math.min(210, Math.max(50, Math.round((width * height) / 12000)));
+      stars = Array.from({ length: count }, () => {
+        const r = Math.random();
+        return {
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 1.35 + 0.25,
+          phase: Math.random() * Math.PI * 2,
+          speed: Math.random() * 0.9 + 0.35,
+          drift: Math.random() * 0.06 + 0.01,
+          tint: r < 0.16 ? 'violet' : (r < 0.27 ? 'gold' : 'ice')
         };
+      });
+    };
 
-        // 点击终端聚焦输入
-        terminal.addEventListener('click', () => {
-            hiddenInput.focus();
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      buildStars();
+    };
+
+    const draw = (t) => {
+      ctx.clearRect(0, 0, width, height);
+
+      for (const s of stars) {
+        const twinkle = 0.45 + 0.55 * (0.5 + 0.5 * Math.sin(t * 0.0012 * s.speed + s.phase));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + COLORS[s.tint] + ',' + (twinkle * 0.72).toFixed(3) + ')';
+        ctx.fill();
+        s.y -= s.drift;
+        if (s.y < -2) {
+          s.y = height + 2;
+          s.x = Math.random() * width;
+        }
+      }
+
+      if (!reduceMotion && t > nextMeteor) {
+        meteors.push({
+          x: width * 0.35 + Math.random() * width * 0.65,
+          y: -60,
+          vx: -2.4 - Math.random() * 1.6,
+          vy: 1.3 + Math.random() * 1.1,
+          born: t,
+          dur: 1200 + Math.random() * 800
         });
+        nextMeteor = t + 8000 + Math.random() * 10000;
+      }
 
-        // 同步输入内容
-        hiddenInput.addEventListener('input', () => {
-            currentInput = hiddenInput.value;
-            inputText.textContent = currentInput;
+      meteors = meteors.filter((m) => t - m.born < m.dur);
+      for (const m of meteors) {
+        const p = (t - m.born) / m.dur;
+        const headX = m.x + m.vx * p * 150;
+        const headY = m.y + m.vy * p * 150;
+        const alpha = Math.sin(Math.PI * p) * 0.8;
+        const grad = ctx.createLinearGradient(headX, headY, headX - m.vx * 26, headY - m.vy * 26);
+        grad.addColorStop(0, 'rgba(220,241,255,' + alpha.toFixed(3) + ')');
+        grad.addColorStop(1, 'rgba(220,241,255,0)');
+        ctx.beginPath();
+        ctx.moveTo(headX, headY);
+        ctx.lineTo(headX - m.vx * 26, headY - m.vy * 26);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    };
+
+    const loop = (ts) => {
+      draw(ts);
+      rafId = window.requestAnimationFrame(loop);
+    };
+
+    const start = () => {
+      if (running || reduceMotion) return;
+      running = true;
+      rafId = window.requestAnimationFrame(loop);
+    };
+
+    const stop = () => {
+      running = false;
+      window.cancelAnimationFrame(rafId);
+    };
+
+    resize();
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resize._t);
+      resize._t = window.setTimeout(resize, 180);
+    });
+
+    if (reduceMotion) {
+      draw(0);
+    } else {
+      start();
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop();
+        else start();
+      });
+    }
+  }
+
+  /* ---------- Header / progress ---------- */
+  const head = document.getElementById('siteHead');
+  const bar = document.getElementById('progressBar');
+  const onScroll = () => {
+    const y = window.scrollY || window.pageYOffset;
+    if (head) head.classList.toggle('is-scrolled', y > 24);
+    if (bar) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? Math.min(100, Math.max(0, (y / max) * 100)) : 0;
+      bar.style.width = pct + '%';
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- Reveal ---------- */
+  const revealItems = Array.from(document.querySelectorAll('.reveal'));
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealItems.forEach((el) => el.classList.add('is-in'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+    revealItems.forEach((el) => io.observe(el));
+  }
+
+  /* ---------- Nav highlight ---------- */
+  const navLinks = Array.from(document.querySelectorAll('.nav a'));
+  const linkBySection = new Map();
+  navLinks.forEach((link) => {
+    const section = document.querySelector(link.getAttribute('href'));
+    if (section) linkBySection.set(section, link);
+  });
+  if ('IntersectionObserver' in window && linkBySection.size) {
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((l) => l.removeAttribute('aria-current'));
+        const active = linkBySection.get(entry.target);
+        if (active) active.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-42% 0px -52% 0px', threshold: 0 });
+    linkBySection.forEach((_, section) => navObserver.observe(section));
+  }
+
+  /* ---------- Aspect switching ---------- */
+  const ASPECTS = {
+    nemesis: { short: '青いネメシス', state: 'Normal', color: '#a8d8f7' },
+    elsion: { short: 'エルシオン', state: 'Nihilistic or Lonely', color: '#c9b8f5' },
+    lumy: { short: 'リュミィ', state: 'Random', color: '#f2b6d2' },
+    melvi: { short: 'メルヴィ', state: 'Game · mainly Ecliptica', color: '#e6cd9a' }
+  };
+  const heroAspect = document.getElementById('heroAspect');
+  const heroState = document.getElementById('heroState');
+  const fileAspect = document.getElementById('fileAspect');
+  const fileState = document.getElementById('fileState');
+  const aspectButtons = Array.from(document.querySelectorAll('.aspect'));
+
+  const selectAspect = (key) => {
+    const data = ASPECTS[key];
+    if (!data) return;
+    root.style.setProperty('--aspect', data.color);
+    if (heroAspect) heroAspect.textContent = data.short;
+    if (heroState) heroState.textContent = data.state;
+    if (fileAspect) fileAspect.textContent = data.short;
+    if (fileState) fileState.textContent = data.state;
+    aspectButtons.forEach((btn) => {
+      btn.setAttribute('aria-pressed', btn.dataset.aspect === key ? 'true' : 'false');
+    });
+  };
+
+  aspectButtons.forEach((btn) => {
+    btn.addEventListener('click', () => selectAspect(btn.dataset.aspect));
+  });
+
+  /* ---------- Language switch ---------- */
+  const langButtons = Array.from(document.querySelectorAll('.lang-switch button'));
+  const applyLang = (lang, persist) => {
+    if (lang !== 'zh' && lang !== 'ja' && lang !== 'en') lang = 'zh';
+    document.documentElement.dataset.lang = lang;
+    langButtons.forEach((btn) => {
+      btn.setAttribute('aria-pressed', btn.dataset.lang === lang ? 'true' : 'false');
+    });
+    if (persist) {
+      try { localStorage.setItem('wnt-lang', lang); } catch (e) {}
+    }
+  };
+  applyLang(document.documentElement.dataset.lang || 'zh', false);
+  langButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const anchor = btn.closest('.sec-head');
+      const before = anchor ? anchor.getBoundingClientRect().top : 0;
+      applyLang(btn.dataset.lang, true);
+      if (anchor) {
+        window.requestAnimationFrame(() => {
+          const delta = anchor.getBoundingClientRect().top - before;
+          if (Math.abs(delta) > 1) {
+            window.scrollBy({ top: delta, left: 0, behavior: 'instant' });
+          }
         });
+      }
+    });
+  });
 
-        // 键盘事件处理
-        hiddenInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                const command = currentInput.trim();
-                if (command) {
-                    commandHistory.push(command);
-                    historyIndex = commandHistory.length;
-                    printUserInput(command);
-                    executeCommand(command);
-                }
-                currentInput = '';
-                hiddenInput.value = '';
-                inputText.textContent = '';
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (historyIndex > 0) {
-                    historyIndex--;
-                    currentInput = commandHistory[historyIndex];
-                    hiddenInput.value = currentInput;
-                    inputText.textContent = currentInput;
-                }
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (historyIndex < commandHistory.length - 1) {
-                    historyIndex++;
-                    currentInput = commandHistory[historyIndex];
-                } else {
-                    historyIndex = commandHistory.length;
-                    currentInput = '';
-                }
-                hiddenInput.value = currentInput;
-                inputText.textContent = currentInput;
-            }
-        });
+  /* ---------- Mobile nav ---------- */
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  const setNav = (open) => {
+    document.body.classList.toggle('nav-open', open);
+    if (menuBtn) {
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuBtn.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+    }
+    if (mobileNav) mobileNav.setAttribute('aria-hidden', open ? 'false' : 'true');
+  };
+  if (menuBtn && mobileNav) {
+    menuBtn.addEventListener('click', () => setNav(!document.body.classList.contains('nav-open')));
+    mobileNav.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setNav(false)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('nav-open')) {
+        setNav(false);
+        menuBtn.focus();
+      }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 980 && document.body.classList.contains('nav-open')) setNav(false);
+    });
+  }
 
-        // 系统启动动画
-        function bootSystem() {
-            const bootLines = [
-                { text: '=== Anti-Utopia System v1.0 ===', class: 'highlight glitch', delay: 0 },
-                { text: 'Initializing core modules...', class: 'system-gray', delay: 500 },
-                { text: '[OK] Memory module loaded', class: 'success', delay: 300 },
-                { text: '[OK] User profile linked: Wnt. Snwf.', class: 'success', delay: 300 },
-                { text: '[WARN] Utopia module not found', class: 'error', delay: 400 },
-                { text: 'System ready.', class: 'system-cyan', delay: 500 },
-                { text: 'Type "help" to list all available commands.', class: 'system-gray', delay: 200 }
-            ];
+  /* ---------- Hero pointer effects ---------- */
+  const hero = document.querySelector('.hero');
+  const sigil = document.querySelector('.sigil');
+  if (hero && finePointer && !reduceMotion) {
+    hero.addEventListener('pointermove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
+      hero.style.setProperty('--mx', (px * 100).toFixed(2) + '%');
+      hero.style.setProperty('--my', (py * 100).toFixed(2) + '%');
+      if (sigil) {
+        const dx = (px - 0.5) * 20;
+        const dy = (py - 0.5) * 20;
+        sigil.style.transform = 'translate3d(' + dx.toFixed(2) + 'px,' + dy.toFixed(2) + 'px,0)';
+      }
+    });
+    hero.addEventListener('pointerleave', () => {
+      if (sigil) sigil.style.transform = '';
+    });
+  }
 
-            let totalDelay = 0;
-            bootLines.forEach(line => {
-                totalDelay += line.delay;
-                setTimeout(() => {
-                    appendOutput(line.text, line.class);
-                    // 给故障元素添加data-text
-                    if (line.class.includes('glitch')) {
-                        const lastLine = output.lastElementChild;
-                        lastLine.setAttribute('data-text', line.text);
-                    }
-                    scrollToBottom();
-                }, totalDelay);
-            });
-        }
-
-        // 打印用户输入
-        function printUserInput(text) {
-            const line = document.createElement('div');
-            line.className = 'output-line';
-            line.innerHTML = `<span class="prompt">&gt;&gt;&gt;</span> <span class="user-input">${escapeHtml(text)}</span>`;
-            output.appendChild(line);
-            scrollToBottom();
-        }
-
-        // 追加文本输出
-        function appendOutput(text, className = '') {
-            const line = document.createElement('div');
-            line.className = `output-line ${className}`;
-            line.textContent = text;
-            output.appendChild(line);
-            scrollToBottom();
-        }
-
-        // 追加HTML输出
-        function appendHtml(html, className = '') {
-            const line = document.createElement('div');
-            line.className = `output-line ${className}`;
-            line.innerHTML = html;
-            output.appendChild(line);
-            scrollToBottom();
-        }
-
-        // 滚动到底部
-        function scrollToBottom() {
-            terminal.scrollTop = terminal.scrollHeight;
-        }
-
-        // HTML转义
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // 命令执行
-        function executeCommand(cmd) {
-            const command = cmd.toLowerCase();
-            
-            switch(command) {
-                case 'help':
-                    showHelp();
-                    break;
-                case 'bio':
-                    showBio();
-                    break;
-                case 'status':
-                    showStatus();
-                    break;
-                case 'groups':
-                    showGroups();
-                    break;
-                case 'contact':
-                    showContact();
-                    break;
-                case 'social':
-                    showSocial();
-                    break;
-                case 'utopia':
-                    showUtopia();
-                    break;
-                case 'clear':
-                    clearTerminal();
-                    break;
-                case 'bilibili':
-                    showBilibili();
-                    break;
-                case 'steam':
-                    showSteam();
-                    break;
-                case 'cafe':
-                    showCafe();
-                    break;
-                case 'kind':
-                    showEgg1();
-                    break;
-                case 'snow':
-                    showEgg2();
-                    break;
-                case 'understand':
-                    showEgg3();
-                    break;
-                case 'hope':
-                    showEgg4();
-                    break;
-                case 'the world is an anti-utopia.':
-                    showAdminWelcome();
-                    break;
-                case 'why':
-                    showReason();
-                    break;
-                default:
-                    appendOutput(`Command not found: ${cmd}`, 'error');
-                    appendOutput('Type "help" for available commands.', 'system-gray');
-            }
-        }
-
-        // 帮助命令
-        function showHelp() {
-            const helpContent = `Available Commands:
-  help        Show this help message
-  bio         Display user biography
-  status      Show online status & profile info
-  groups      List owned and joined groups
-  contact     Get contact email
-  bilibili    Open Bilibili profile
-  steam       Open Steam profile
-  social      Show extended social media details
-  cafe        Open Goodnight Café world
-  utopia      Access Utopia module
-  clear       Clear the terminal screen
-
-[Hint] There are hidden commands waiting to be discovered.`;
-            appendOutput(helpContent, 'system-cyan');
-        }
-
-        // 个人简介
-        function showBio() {
-            appendOutput('Loading user profile...', 'system-gray');
-            setTimeout(() => {
-                appendOutput('Success.', 'success');
-                setTimeout(() => {
-                    appendHtml(`<span class="prompt">&gt;&gt;&gt;</span> Load ISFP, INFP
-<span class="success">Success.</span>
-
-<span class="prompt">&gt;&gt;&gt;</span> Print bio
-I've waited for spring, I've waited for understanding, I've waited for someone to say "of course".
-But spring is always followed by winter, and understanding is always followed by misunderstanding.
-Then I found out: the world is an anti-Utopia.`);
-                }, 300);
-            }, 400);
-        }
-
-        // 状态信息
-        function showStatus() {
-            const status = `Username:   真白 冬雪
-Status:     Online | ネメシス
-Pronoun:    Yuki / 小雪`;
-            appendOutput(status, 'highlight');
-        }
-
-        // 群组信息
-        function showGroups() {
-            const groups = `Owned Group:
-  - WntSnwf
-
-Joined Groups:
-  - ネメシス教団
-  - Lv.100 メンヘラ
-  - ...`;
-            appendOutput(groups);
-        }
-
-        // 联系方式
-        function showContact() {
-            const contact = `Email:  Fuyu_Yume@outlook.com`;
-            appendOutput(contact);
-        }
-
-        // Bilibili主页
-        function showBilibili() {
-            appendHtml('Bilibili Profile: <a href="https://space.bilibili.com/337793420" target="_blank">https://space.bilibili.com/337793420</a>');
-        }
-
-        // Steam主页
-        function showSteam() {
-            appendHtml('Steam Profile: <a href="https://steamcommunity.com/id/WntSnwf" target="_blank">https://steamcommunity.com/id/WntSnwf</a>');
-        }
-
-        // 社交媒体详情
-        function showSocial() {
-            const social = `QQ:         2078029993 (Inactive account. Active account granted upon trust.)
-WeChat:     Secret
-Youtube:    Null
-Twitter:    Null
-Github:     WntSnwf`;
-            appendOutput(social, 'system-gray');
-        }
-
-        // Utopia模块
-        function showUtopia() {
-            appendOutput('Accessing Utopia module...', 'system-gray');
-            setTimeout(() => {
-                const err1 = document.createElement('div');
-                err1.className = 'output-line error glitch';
-                err1.textContent = 'ERROR.CANNOTFIND.UTOPIA';
-                err1.setAttribute('data-text', 'ERROR.CANNOTFIND.UTOPIA');
-                output.appendChild(err1);
-                scrollToBottom();
-
-                setTimeout(() => {
-                    const err2 = document.createElement('div');
-                    err2.className = 'output-line error glitch';
-                    err2.textContent = 'ERROR.CANNOTFIND.LIFE';
-                    err2.setAttribute('data-text', 'ERROR.CANNOTFIND.LIFE');
-                    output.appendChild(err2);
-                    scrollToBottom();
-
-                    setTimeout(() => {
-                        appendOutput('Switching to Anti-Utopia System...', 'system-gray');
-                        setTimeout(() => {
-                            appendOutput('Anti-Utopia System is already running.', 'success');
-                        }, 500);
-                    }, 600);
-                }, 400);
-            }, 500);
-        }
-
-        // 清屏
-        function clearTerminal() {
-            output.innerHTML = '';
-        }
-
-        // 管理员欢迎效果
-        function showAdminWelcome() {
-            appendOutput('Verifying administrator identity...', 'system-gray');
-            setTimeout(() => {
-                appendOutput('[OK] Identity verification passed', 'success');
-                setTimeout(() => {
-                    appendOutput('Unlocking core system privileges...', 'system-gray');
-                    setTimeout(() => {
-                        appendHtml(`
-<span class="highlight">Welcome, administrator.</span>
-<span class="system-cyan">Admin ID: Nemesis & Yuki</span>
-<span class="system-gray">Anti-Utopia System root access granted.</span>`);
-                    }, 500);
-                }, 500);
-            }, 600);
-        }
-
-        // 彩蛋1
-        function showEgg1() {
-            const egg = `Congratulations on finding the hidden egg.
-
-Everyone goes through difficult times.
-When things feel heavy, try to gently let go of what's weighing you down.
-Do something you truly enjoy -- listen to music, hear the sound of rain, anything that brings you peace.
-Everything will be fine.
-
-Be kind to yourself. Bright days are ahead.
-
-Love from China.`;
-            appendOutput(egg, 'highlight');
-        }
-
-        // 彩蛋2
-        function showEgg2() {
-            const egg = `Don't feel sad over my death.
-Just as winter's crystal is fragile,
-there's a time for every snowflake to melt.
-If you can remember there has been a snowflake in your life,
-that is enough.
-
-不必为我的逝去哀戚。
-若说冬日晶莹易碎，
-须知每片雪花终将消融。
-只要记得生命中曾有片雪花停留过，
-便已足够。`;
-            appendOutput(egg);
-        }
-
-        // 彩蛋3
-        function showEgg3() {
-            const egg = `You know, no one in the world can completely understand you.
-Not your friends, not your parents, not even yourself.
-
-But there must be someone willing to try to understand and accept you.
-If you don't have that person yet, let me be that person.
-Let me understand you, accept you, save you --
-
-because that is exactly what no one has ever done for me.`;
-            appendOutput(egg);
-        }
-
-        // 彩蛋4
-        function showEgg4() {
-            const egg = `Life is full of luck.
-How far you rise, depends on how kindly it treats you.
-It's ridiculous, but true.
-
-So, since everything is already written into destiny,
-what's the meaning of living in a ridiculous world,
-doing ridiculous things that you may not wanna do,
-and ridiculously preventing people from dying?
-
-Maybe it's just because of that tiny, almost invisible hope.
-
----
-Reply to Kamitora's VRChat bio,
-and figure out why I want to prevent those whom I met and got along with from dying.`;
-            appendOutput(egg);
-        }
-
-        // 理由彩蛋
-        function showReason() {
-            appendOutput('Why I built this Anti-Utopia System and believe the world is an anti-Utopia?','system-gray');
-            setTimeout(() => {
-                appendOutput('Because "the reality is always unwilling to give me the answer I want."', 'highlight');
-            }, 500);
-        }
-
-        // 咖啡屋链接
-        function showCafe() {
-            appendHtml('Goodnight Café: <a href="https://vrchat.com/home/world/wrld_a5b04cb4-27b3-49d5-9dbc-5ce3099aa235/info" target="_blank">https://vrchat.com/home/world/wrld_a5b04cb4-27b3-49d5-9dbc-5ce3099aa235/info</a>');
-        }
-    </script>
+  /* ---------- Year ---------- */
+  const year = document.getElementById('year');
+  if (year) year.textContent = String(new Date().getFullYear());
+})();
+</script>
 </body>
 </html>
