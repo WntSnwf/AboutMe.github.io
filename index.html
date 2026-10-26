@@ -1,6 +1,15 @@
 <!DOCTYPE html>
+<!--
+  真白 冬雪 / Mashiro Fuyuyuki · 个人主页
+  ------------------------------------------------------------
+  · 单文件：HTML + 内联 CSS + 页尾原生 JS，无外部依赖。
+  · 区块：首屏 → 档案 → 化身 → 游历 → 问答 → 残响 → 终章 → 页脚。
+  · 语言：问答 / 残响支持中·日·英，其余界面保持当前中日混排。
+  · 素材：avatars/ 下的角色立绘；文字来源为 player.txt。
+-->
 <html lang="zh-CN" data-lang="zh">
 <head>
+<!-- 页面元信息：编码、移动端视口、深色主题、分享卡片与站点图标 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
@@ -11,6 +20,7 @@
 <meta property="og:description" content="永遠に孤独な人 · 神？紙？かみです · 私を愛して">
 <meta property="og:type" content="profile">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2304060c'/%3E%3Cpath d='M40 15a18 18 0 1 0 0 34 14 14 0 1 1 0-34z' fill='%23b9defa'/%3E%3Ccircle cx='45' cy='20' r='2' fill='%23d9c79f'/%3E%3C/svg%3E">
+<!-- 提前恢复上次选择的语言，避免刷新时先闪一下中文；同时给 <html> 标记 JS 可用 -->
 <script>
   document.documentElement.classList.add('js');
   try {
@@ -20,9 +30,10 @@
     }
   } catch (e) {}
 </script>
+<!-- 全部样式内联于此：变量 → 氛围 → 导航 → 首屏 → 各区块 → 语言切换 → 响应式 -->
 <style>
 /* ============================================================
-   0. Tokens
+   0. 设计变量：颜色、字体、线框、页面宽度
    ============================================================ */
 :root{
   --bg:#04060c;
@@ -98,7 +109,7 @@ button{font:inherit;color:inherit}
 .skip:focus{top:14px}
 
 /* ============================================================
-   1. Atmosphere
+   1. 氛围层：极光、星野、噪点（固定背景，不接收鼠标事件）
    ============================================================ */
 .aurora{
   position:fixed;inset:-18%;z-index:0;pointer-events:none;
@@ -134,7 +145,7 @@ button{font:inherit;color:inherit}
 }
 
 /* ============================================================
-   2. Progress / Header
+   2. 顶部进度条 + 固定导航（品牌 / 主导航 / 状态胶囊 / 移动菜单）
    ============================================================ */
 .progress{
   position:fixed;top:0;left:0;right:0;height:1px;z-index:50;
@@ -254,7 +265,7 @@ body.nav-open .mobile-nav{opacity:1;visibility:visible}
 body.nav-open{overflow:hidden}
 
 /* ============================================================
-   3. Hero
+   3. 首屏：姓名、在线状态、化身、箴言、按钮与「神 / 紙」徽记
    ============================================================ */
 .hero{
   position:relative;
@@ -375,6 +386,7 @@ body.nav-open{overflow:hidden}
 .btn.primary:hover{background:var(--ice-bright);border-color:var(--ice-bright);box-shadow:0 10px 36px -14px rgba(168,216,247,.75)}
 .btn .arw{font-family:var(--sans);font-size:13px;letter-spacing:0}
 
+/* 右侧徽记：多层旋转细环、环形文字与中央「神」字 */
 /* Sigil */
 .sigil{
   position:relative;z-index:1;
@@ -449,7 +461,7 @@ body.nav-open{overflow:hidden}
 }
 
 /* ============================================================
-   4. Sections
+   4. 区块通用：编号、标题、副标题、引导语、正文排版
    ============================================================ */
 main{position:relative;z-index:2}
 .section{position:relative;padding:clamp(80px,11vw,146px) 0}
@@ -476,6 +488,7 @@ main{position:relative;z-index:2}
   padding-bottom:10px;text-align:right;
 }
 
+/* 语言切换：按钮样式 + 三语文本显隐；无 JS 时默认中文并隐藏按钮 */
 /* Language switching */
 .lang[data-lang]{display:none}
 html[data-lang="zh"] .lang[data-lang="zh"],
@@ -517,6 +530,7 @@ html:not(.js) .lang-switch{display:none}
 }
 .lead em{font-style:normal;color:var(--gold)}
 
+/* 档案：左侧姓名/自述，右侧身份卡 */
 /* Identity */
 .profile{
   display:grid;grid-template-columns:1.05fr .95fr;
@@ -595,6 +609,7 @@ html:not(.js) .lang-switch{display:none}
 .dossier dd .dot{display:inline-block;margin-right:8px;vertical-align:middle}
 .dossier dd .accent{color:var(--aspect);transition:color .5s ease}
 
+/* 化身：四张角色卡，图片压暗；选中时提亮并联动首屏 */
 /* Aspects */
 .aspect-intro{
   display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
@@ -699,6 +714,7 @@ html:not(.js) .lang-switch{display:none}
 }
 .aspect-hint b{color:var(--ice);font-weight:400}
 
+/* 游历：左侧引导语 + 右侧世界列表 */
 /* Worlds */
 .worlds-grid{
   display:grid;grid-template-columns:.8fr 1.2fr;
@@ -749,6 +765,7 @@ html:not(.js) .lang-switch{display:none}
   letter-spacing:.3em;
 }
 
+/* 问答：Q/A 面板；内容与残响一样支持中 / 日 / 英 */
 /* Oracle */
 .oracle-panel{
   position:relative;overflow:hidden;
@@ -785,6 +802,7 @@ html:not(.js) .lang-switch{display:none}
 .qa-a p em{font-style:normal;color:var(--gold)}
 .qa-line{height:1px;background:linear-gradient(90deg,rgba(217,199,159,.4),transparent 70%)}
 
+/* 残响：四段可折叠独白，summary 行 + 展开正文 */
 /* Echoes */
 .echoes{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .echo{border-bottom:1px solid var(--line)}
@@ -831,6 +849,7 @@ html:not(.js) .lang-switch{display:none}
 .echo-body .lang[data-lang]{white-space:pre-line}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
+/* 终章：神格宣言（EN / JP / CN 同时呈现） */
 /* Finale */
 .finale{
   position:relative;overflow:hidden;
@@ -879,6 +898,7 @@ html:not(.js) .lang-switch{display:none}
   color:var(--ink-mute);text-transform:uppercase;
 }
 
+/* 页脚：品牌、外部链接、版权 */
 /* Footer */
 .site-foot{
   position:relative;z-index:2;
@@ -915,7 +935,7 @@ html:not(.js) .lang-switch{display:none}
 .foot-bottom .kami{color:var(--gold);letter-spacing:.32em}
 
 /* ============================================================
-   5. Reveal
+   5. 滚动入场：.reveal 进入视口后淡入上移；reduced-motion 时直接显示
    ============================================================ */
 .js .reveal{
   opacity:0;transform:translateY(26px);
@@ -931,7 +951,7 @@ html:not(.js) .lang-switch{display:none}
 }
 
 /* ============================================================
-   6. Responsive
+   6. 响应式：1100（卡片两列）/ 980（隐藏桌面导航）/ 760（单列）/ 560（紧凑手机）
    ============================================================ */
 @media (max-width:1100px){
   .aspects{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1013,6 +1033,7 @@ html:not(.js) .lang-switch{display:none}
 </svg>
 <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
 
+<!-- 固定顶栏：品牌、主导航、在线状态胶囊、移动菜单按钮 -->
 <header class="site-head" id="siteHead">
   <a class="brand" href="#top" aria-label="回到顶部">
     <span class="brand-mark" aria-hidden="true">神</span>
@@ -1037,6 +1058,7 @@ html:not(.js) .lang-switch{display:none}
   </button>
 </header>
 
+<!-- 移动端全屏菜单（右上角按钮控制，Esc 或点击链接关闭） -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <ul>
     <li><a href="#identity">档案<i>PROFILE</i></a></li>
@@ -1048,7 +1070,7 @@ html:not(.js) .lang-switch{display:none}
 </div>
 
 <main id="main">
-  <!-- ================= Hero ================= -->
+  <!-- ================= 首屏 / Hero：姓名、状态、化身、箴言、入口按钮、徽记 ================= -->
   <section class="hero" id="top" aria-labelledby="heroTitle">
     <div class="wrap hero-grid">
       <div class="hero-copy">
@@ -1162,7 +1184,7 @@ html:not(.js) .lang-switch{display:none}
     <div class="scroll-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
   </section>
 
-  <!-- ================= Identity ================= -->
+  <!-- ================= 档案 / Identity：自述 + 身份卡 ================= -->
   <section class="section" id="identity" aria-labelledby="identityTitle">
     <div class="wrap">
       <header class="sec-head reveal">
@@ -1218,7 +1240,7 @@ html:not(.js) .lang-switch{display:none}
     </div>
   </section>
 
-  <!-- ================= Aspects ================= -->
+  <!-- ================= 化身 / Aspects：四张角色卡，点击联动首屏与档案 ================= -->
   <section class="section" id="aspects" aria-labelledby="aspectsTitle">
     <div class="wrap">
       <header class="sec-head reveal">
@@ -1298,7 +1320,7 @@ html:not(.js) .lang-switch{display:none}
     </div>
   </section>
 
-  <!-- ================= Worlds ================= -->
+  <!-- ================= 游历 / Worlds：已知的游戏与世界列表 ================= -->
   <section class="section" id="worlds" aria-labelledby="worldsTitle">
     <div class="wrap">
       <header class="sec-head reveal">
@@ -1349,7 +1371,7 @@ html:not(.js) .lang-switch{display:none}
     </div>
   </section>
 
-  <!-- ================= Oracle ================= -->
+  <!-- ================= 问答 / Oracle：祈祷与回答，支持中·日·英 ================= -->
   <section class="section" id="oracle" aria-labelledby="oracleTitle">
     <div class="wrap">
       <header class="sec-head reveal">
@@ -1364,27 +1386,33 @@ html:not(.js) .lang-switch{display:none}
         </div>
       </header>
 
+      <!--
+        问答 / Oracle
+        · Q：向众神祈祷，回应她的却只有「理想中的自己」。
+        · A：既然如此，她便决定成为自己的神明。
+        · 三语内容由标题栏右侧的 LANG 按钮切换（data-lang）。
+      -->
       <div class="oracle-panel reveal">
         <div class="qa">
           <div class="qa-row qa-q">
             <span class="mark" aria-hidden="true">Q</span>
-            <p class="lang" data-lang="zh">究竟是怎样的结局<br>才配得上这一路的颠沛流离？</p>
-            <p class="lang" data-lang="ja" lang="ja">いったいどんな結末なら、<br>この道のりの波乱にふさわしいのだろう？</p>
-            <p class="lang" data-lang="en" lang="en">What kind of ending<br>could ever be worthy of all this wandering?</p>
+            <p class="lang" data-lang="zh">我向众神祈祷，<br>回应我的却只有理想中的自己。</p>
+            <p class="lang" data-lang="ja" lang="ja">私は神々に祈った。<br>けれど応えたのは、理想の中の私だけだった。</p>
+            <p class="lang" data-lang="en" lang="en">I prayed to the gods,<br>but only the idealized version of myself answered.</p>
           </div>
           <div class="qa-line" aria-hidden="true"></div>
           <div class="qa-row qa-a">
             <span class="mark" aria-hidden="true">A</span>
-            <p class="lang" data-lang="zh">如果这就是一切的尽头，<br>那么…<em>这一宿命</em>由我来划上休止符。</p>
-            <p class="lang" data-lang="ja" lang="ja">もしこれがすべての終わりなら、<br><em>この宿命</em>には、私が終止符を打つ。</p>
-            <p class="lang" data-lang="en" lang="en">If this is the end of everything,<br>then I will put an end to <em>this fate</em> myself.</p>
+            <p class="lang" data-lang="zh">那我，便<em>成为自己的神明</em>。</p>
+            <p class="lang" data-lang="ja" lang="ja">ならば、私は<em>自分の神</em>になろう。</p>
+            <p class="lang" data-lang="en" lang="en">Then I shall become <em>my own god</em>.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ================= Echoes ================= -->
+  <!-- ================= 残响 / Echoes：四段可折叠独白，支持中·日·英 ================= -->
   <section class="section" id="echoes" aria-labelledby="echoesTitle">
     <div class="wrap">
       <header class="sec-head reveal">
@@ -1406,6 +1434,7 @@ html:not(.js) .lang-switch{display:none}
       </p>
 
       <ul class="echoes reveal" style="--d:120ms">
+        <!-- E·01 神 / 紙：人造的神，以及“神 / 纸”在日语里同音「かみ」的巧合 -->
         <li>
           <details class="echo">
             <summary>
@@ -1451,6 +1480,7 @@ I think it is a curious coincidence. Perhaps it was fate.</div>
             </div>
           </details>
         </li>
+        <!-- E·02 愛：缺爱、依赖，以及只想抓住一个精神寄托 -->
         <li>
           <details class="echo">
             <summary>
@@ -1493,6 +1523,7 @@ So I became this person. This god.</div>
             </div>
           </details>
         </li>
+        <!-- E·03 死：出生即开始的 100% 死亡率游戏，以及她想阻止所爱之人死去的“神职” -->
         <li>
           <details class="echo">
             <summary>
@@ -1529,6 +1560,7 @@ That is my divine duty.</div>
             </div>
           </details>
         </li>
+        <!-- E·04 剣：拿起剑与放下剑的勇气；她最终选择了沉默与逃避 -->
         <li>
           <details class="echo">
             <summary>
@@ -1569,7 +1601,7 @@ Someone who has never held a sword may never understand what it means to hold on
     </div>
   </section>
 
-  <!-- ================= Finale ================= -->
+  <!-- ================= 终章 / Finale：神格宣言 ================= -->
   <section class="finale" id="finale" aria-labelledby="finaleTitle">
     <div class="wrap finale-inner">
       <p class="eyebrow">Divinity / 神格</p>
@@ -1583,6 +1615,7 @@ Someone who has never held a sword may never understand what it means to hold on
   </section>
 </main>
 
+<!-- 页脚：品牌、外部链接、版权 -->
 <footer class="site-foot">
   <div class="wrap">
     <div class="foot-top">
@@ -1609,11 +1642,17 @@ Someone who has never held a sword may never understand what it means to hold on
 (() => {
   'use strict';
 
+  /*
+    页面交互模块：
+    1. 星野画布；2. 顶部进度 / 导航；3. 滚动入场；4. 导航高亮；
+    5. 化身切换；6. 语言切换；7. 移动菜单；8. 首屏指针视差；9. 页脚年份。
+  */
+
   const root = document.documentElement;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = window.matchMedia('(pointer: fine)').matches;
 
-  /* ---------- Star field ---------- */
+  /* ---------- 1. 星野：星星闪烁 + 偶发流星；页面隐藏时暂停 ---------- */
   const canvas = document.getElementById('sky');
   if (canvas && canvas.getContext) {
     const ctx = canvas.getContext('2d');
@@ -1733,7 +1772,7 @@ Someone who has never held a sword may never understand what it means to hold on
     }
   }
 
-  /* ---------- Header / progress ---------- */
+  /* ---------- 2. 顶部导航背景 + 阅读进度条 ---------- */
   const head = document.getElementById('siteHead');
   const bar = document.getElementById('progressBar');
   const onScroll = () => {
@@ -1748,7 +1787,7 @@ Someone who has never held a sword may never understand what it means to hold on
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* ---------- Reveal ---------- */
+  /* ---------- 3. 滚动入场：进入视口后淡入上移 ---------- */
   const revealItems = Array.from(document.querySelectorAll('.reveal'));
   if (reduceMotion || !('IntersectionObserver' in window)) {
     revealItems.forEach((el) => el.classList.add('is-in'));
@@ -1764,7 +1803,7 @@ Someone who has never held a sword may never understand what it means to hold on
     revealItems.forEach((el) => io.observe(el));
   }
 
-  /* ---------- Nav highlight ---------- */
+  /* ---------- 4. 导航高亮：根据当前所在区块标记对应链接 ---------- */
   const navLinks = Array.from(document.querySelectorAll('.nav a'));
   const linkBySection = new Map();
   navLinks.forEach((link) => {
@@ -1783,7 +1822,7 @@ Someone who has never held a sword may never understand what it means to hold on
     linkBySection.forEach((_, section) => navObserver.observe(section));
   }
 
-  /* ---------- Aspect switching ---------- */
+  /* ---------- 5. 化身切换：更新首屏 / 档案 / 强调色与卡片选中态 ---------- */
   const ASPECTS = {
     nemesis: { short: '青いネメシス', state: 'Normal', color: '#a8d8f7' },
     elsion: { short: 'エルシオン', state: 'Nihilistic or Lonely', color: '#c9b8f5' },
@@ -1813,7 +1852,7 @@ Someone who has never held a sword may never understand what it means to hold on
     btn.addEventListener('click', () => selectAspect(btn.dataset.aspect));
   });
 
-  /* ---------- Language switch ---------- */
+  /* ---------- 6. 语言切换：中 / 日 / 英；写 localStorage，切换时保持段落位置 ---------- */
   const langButtons = Array.from(document.querySelectorAll('.lang-switch button'));
   const applyLang = (lang, persist) => {
     if (lang !== 'zh' && lang !== 'ja' && lang !== 'en') lang = 'zh';
@@ -1842,7 +1881,7 @@ Someone who has never held a sword may never understand what it means to hold on
     });
   });
 
-  /* ---------- Mobile nav ---------- */
+  /* ---------- 7. 移动端全屏菜单 ---------- */
   const menuBtn = document.getElementById('menuBtn');
   const mobileNav = document.getElementById('mobileNav');
   const setNav = (open) => {
@@ -1867,7 +1906,7 @@ Someone who has never held a sword may never understand what it means to hold on
     });
   }
 
-  /* ---------- Hero pointer effects ---------- */
+  /* ---------- 8. 首屏鼠标光斑与徽记视差（仅精确指针且未开启减少动效） ---------- */
   const hero = document.querySelector('.hero');
   const sigil = document.querySelector('.sigil');
   if (hero && finePointer && !reduceMotion) {
@@ -1888,7 +1927,7 @@ Someone who has never held a sword may never understand what it means to hold on
     });
   }
 
-  /* ---------- Year ---------- */
+  /* ---------- 9. 页脚年份 ---------- */
   const year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());
 })();
