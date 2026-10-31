@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!--
-  真白 冬雪 / Mashiro Fuyuyuki
+  真白 冬雪 / Mashiro Fuyuyuki · After Hours
   ------------------------------------------------------------
   · 单文件个人主页：HTML + 内联 CSS + 页尾原生 JS。
-  · 主题：深夜、脆弱的连接、VRChat 房间与群组；不再使用旧版的神谕/神格设定。
+  · 主题：深夜、VRChat 两个世界、BOOTH 小店与群组；夜谈保留为独立的夜间段落。
   · 结构：首屏 → 01 档案 → 02 状态 → 03 夜谈 → 04 房间 → 05 团体 → 06 链接 → 页脚。
   · 内容来源：player.txt。
 -->
@@ -15,9 +15,9 @@
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#06080d">
 <title>真白 冬雪</title>
-<meta name="description" content="真白 冬雪 / Mashiro Fuyuyuki。ISFP &amp; INFP，永遠に孤独な人。Online: Love me... VRChat worlds, groups, and late-night notes.">
+<meta name="description" content="真白 冬雪 / Mashiro Fuyuyuki。ISFP &amp; INFP。Online: Love me... Two VRChat worlds, a BOOTH shop, groups, and late-night notes.">
 <meta property="og:title" content="真白 冬雪 · After Hours">
-<meta property="og:description" content="我们之间的关系脆弱到删除好友就结束了，不是吗？">
+<meta property="og:description" content="我想做回刚玩 VRC 的自己。">
 <meta property="og:type" content="profile">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2306080d'/%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='%23e6c79a' stroke-width='1.4'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23e6c79a'/%3E%3C/svg%3E">
 <script>document.documentElement.classList.add('js');</script>
@@ -190,7 +190,11 @@ main{position:relative;z-index:2}
 .about-copy{margin:26px 0 0;max-width:50ch;font-family:var(--serif);font-size:clamp(1rem,1.5vw,1.2rem);line-height:2.15;letter-spacing:.08em;color:var(--ink-soft)}
 .about-copy em{font-style:normal;color:var(--amber-bright)}
 .about-copy .quiet{color:var(--ink-mute)}
-.about-quote{margin:32px 0 0;padding-left:18px;border-left:1px solid var(--amber);font-family:var(--mono);font-size:clamp(.85rem,1.3vw,.98rem);letter-spacing:.06em;line-height:1.9;color:var(--amber)}
+.about-translations{display:grid;gap:9px;margin:24px 0 0;padding-top:18px;border-top:1px solid var(--line);max-width:56ch}
+.about-translations p{margin:0;font-family:var(--sans);font-size:clamp(.72rem,1.05vw,.8rem);line-height:1.95;letter-spacing:.02em;color:var(--ink-mute)}
+.about-translations .lang{display:inline-block;margin-right:8px;font-family:var(--mono);font-size:7px;letter-spacing:.18em;color:var(--amber);vertical-align:1px}
+.about-shop{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding-bottom:3px;border-bottom:1px solid rgba(230,199,154,.35);font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--amber);text-transform:uppercase;transition:color .25s ease,border-color .25s ease}
+.about-shop:hover{color:var(--amber-bright);border-color:var(--amber-bright)}
 .file-card{position:relative;padding:clamp(24px,3.4vw,34px);border:1px solid var(--line-strong);background:linear-gradient(155deg,rgba(18,25,35,.72),rgba(8,12,19,.46));box-shadow:0 40px 90px -55px rgba(0,0,0,.95)}
 .file-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:16px;margin-bottom:6px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:8px;letter-spacing:.24em;color:var(--ink-mute);text-transform:uppercase}
 .file-status{display:inline-flex;align-items:center;gap:7px;color:var(--ink-soft)}
@@ -201,6 +205,8 @@ main{position:relative;z-index:2}
 .file-card dt{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute);padding-top:4px}
 .file-card dd{margin:0;font-family:var(--serif);font-size:14px;letter-spacing:.05em;line-height:1.7;color:var(--ink)}
 .file-card dd.accent{color:var(--state);transition:color .4s ease}
+.file-card dd a{color:var(--amber);border-bottom:1px solid rgba(230,199,154,.3);transition:color .25s ease,border-color .25s ease}
+.file-card dd a:hover{color:var(--amber-bright);border-color:var(--amber-bright)}
 .world-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
 .chip-label{width:100%;font-family:var(--mono);font-size:8px;letter-spacing:.22em;color:var(--ink-mute);text-transform:uppercase}
 .chip{padding:3px 8px;border:1px solid var(--line);font-family:var(--mono);font-size:8px;letter-spacing:.06em;color:var(--ink-soft)}
@@ -401,7 +407,7 @@ main{position:relative;z-index:2}
   <section class="hero" id="top" aria-labelledby="heroTitle">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">After Hours · 03:17 · Anti-Utopia</p>
+        <p class="eyebrow">After Hours · VRChat · BOOTH</p>
         <h1 class="hero-title" id="heroTitle">
           <span class="name-jp">真白 冬雪</span>
           <span class="name-reading">
@@ -421,11 +427,12 @@ main{position:relative;z-index:2}
         </p>
         <p class="pronoun">称呼 <span>Yuki / 小雪</span></p>
 
-        <blockquote class="hero-quote">我们之间的关系脆弱到<br>删除好友就结束了，不是吗？</blockquote>
+        <blockquote class="hero-quote">我想做回<br>刚玩 VRC 的自己。</blockquote>
 
         <div class="hero-actions">
           <a class="btn primary" href="#notes">进入夜谈 <span aria-hidden="true">↓</span></a>
           <a class="btn" href="#rooms">两个房间</a>
+          <a class="btn" href="https://wntsnwf.booth.pm/" target="_blank" rel="noopener noreferrer">BOOTH 小店 ↗</a>
         </div>
       </div>
 
@@ -443,7 +450,7 @@ main{position:relative;z-index:2}
             <span class="p-state" id="portraitState">Normal</span>
           </div>
         </div>
-        <figcaption class="portrait-note">Love me... / 私を愛して</figcaption>
+        <figcaption class="portrait-note">Love me...</figcaption>
       </figure>
     </div>
     <div class="scroll-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
@@ -463,14 +470,18 @@ main{position:relative;z-index:2}
           <p class="about-name">真白 冬雪<small>Mashiro Fuyuyuki · ましろ ふゆゆき</small></p>
           <p class="about-copy">
             ISFP &amp; INFP。<br>
-            永遠に孤独な人。<br>
-            <span class="quiet" lang="ja">神？紙？かみです。</span><br>
-            <em lang="ja">私を愛して。</em>
+            我想做回刚玩 VRC 的自己。<br>
+            做了两个地图，在 BOOTH 上售卖一些小物。<br>
+            感兴趣的话请光顾一下。
           </p>
-          <p class="about-quote">The world is an Anti-Utopia.</p>
+          <div class="about-translations">
+            <p lang="en"><span class="lang">EN</span>I wanna be the me who just played VRChat.<br>I made two worlds. Also sell some items on booth.<br>If you're interested, please have a visit.</p>
+            <p lang="ja"><span class="lang">JP</span>ヴィチャを始めた頃の自分に戻りたい。<br>二つのワールドを作った。同時にブースで小物を販売しています。<br>もし興味があれば、ぜひお越しください。</p>
+          </div>
+          <a class="about-shop" href="https://wntsnwf.booth.pm/" target="_blank" rel="noopener noreferrer">BOOTH 小店 ↗</a>
         </div>
 
-        <!-- 身份卡：呼称、类型、状态、别名、语言、常去世界 -->
+        <!-- 身份卡：称呼、类型、状态、现在、地图、小店、语言、常去世界 -->
         <aside class="file-card reveal" style="--d:140ms" aria-label="身份档案">
           <div class="file-head">
             <span>File 001 / 档案</span>
@@ -480,8 +491,9 @@ main{position:relative;z-index:2}
             <div class="row"><dt>称呼</dt><dd>Yuki · 小雪</dd></div>
             <div class="row"><dt>类型</dt><dd>ISFP &amp; INFP</dd></div>
             <div class="row"><dt>状态</dt><dd>Online · Love me...</dd></div>
-            <div class="row"><dt>别名</dt><dd lang="ja">ネメシス</dd></div>
             <div class="row"><dt>现在</dt><dd class="accent" id="fileNow" lang="ja">青いネメシス · Normal</dd></div>
+            <div class="row"><dt>地图</dt><dd><a href="#rooms">两个 ↓</a></dd></div>
+            <div class="row"><dt>小店</dt><dd><a href="https://wntsnwf.booth.pm/" target="_blank" rel="noopener noreferrer">BOOTH ↗</a></dd></div>
             <div class="row"><dt>语言</dt><dd>中文 / 日本語 / English</dd></div>
           </dl>
           <div class="world-chips">
@@ -606,7 +618,6 @@ main{position:relative;z-index:2}
           <span class="log-time">04:20</span>
           <div>
             <p class="log-quote log-small">VRChat 糟糕透了。</p>
-            <a class="log-link" href="#rooms">但还有两个房间 <span aria-hidden="true">↓</span></a>
           </div>
         </article>
       </div>
@@ -624,7 +635,7 @@ main{position:relative;z-index:2}
 
       <div class="rooms-intro reveal">
         <p class="lead">两个还开着的房间。</p>
-        <p class="note">VRChat 很糟。但房间还在。</p>
+        <p class="note">做了两个地图。它们都还在。</p>
       </div>
 
       <div class="room-grid">
@@ -734,12 +745,12 @@ main{position:relative;z-index:2}
 <footer class="site-foot">
   <div class="wrap">
     <div class="foot-top">
-      <p class="foot-brand">真白 冬雪<span>Mashiro Fuyuyuki · ネメシス</span></p>
-      <p class="foot-line"><b>Love me...</b> / 私を愛して</p>
+      <p class="foot-brand">真白 冬雪<span>Mashiro Fuyuyuki</span></p>
+      <p class="foot-line"><b>Love me...</b></p>
     </div>
     <div class="foot-bottom">
       <span>© <span id="year">2026</span> Mashiro Fuyuyuki</span>
-      <span>Anti-Utopia</span>
+      <span>VRChat · BOOTH</span>
       <a href="#top">Back to top ↑</a>
     </div>
   </div>
